@@ -1,0 +1,17 @@
+.alert {
+  max-width: 100%;
+  width: 500px;
+  padding: 20px 0;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 15px;
+  &-danger {
+    background: $danger;
+  }
+  &__message {
+    color: #ffffff;
+    font-size: 24px;
+  }
+}

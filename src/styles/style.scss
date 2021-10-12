@@ -1,0 +1,15 @@
+@import "./nullstyles";
+@import "./variables";
+
+//Pages
+@import "../pages/SignPages/signPage";
+
+//Components
+@import "../components/Form/form";
+@import "../components/Alert/alert";  
+
+body {
+  width: 100%;  
+  background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
+}
+
