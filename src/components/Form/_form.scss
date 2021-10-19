@@ -21,6 +21,7 @@
       margin-bottom: 50px;
     }
     &::placeholder {
+      font-weight: 500;
       color: $lightText;
     }
   }
@@ -28,6 +29,7 @@
   //.sign-form__submit
   &__submit {
     color: #ffffff;
+    font-weight: 500;
     font-size: 20px;
     padding: 15px 50px;
     background: linear-gradient(92.68deg, #7cb8f7 0%, #2a8bf2 100%);
@@ -57,4 +59,5 @@
 }
 .authentication-title {
   margin-bottom: 50px;
+  font-weight: 500;
 }

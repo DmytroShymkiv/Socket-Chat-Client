@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import Alert from "../Alert/Alert";
 
 export default function ConfirmationForm({ setSecret, error }) {

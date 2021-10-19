@@ -1,5 +1,6 @@
-import methods from "../../pages/SignPages/methods";
 import React, { useState } from "react";
+
+import methods from "../../pages/SignPages/methods";
 import Loader from "../Loader/Loader";
 
 export default function Form({ onSubmit, method, children }) {
@@ -32,7 +33,7 @@ export default function Form({ onSubmit, method, children }) {
   }
 
   return (
-    <form className="sign-form" onSubmit={handleSubmit}>      
+    <form className="sign-form" onSubmit={handleSubmit}>
       {method === methods.IN && Input("firstName", "First Name")}
       {method === methods.IN && Input("lastName", "Last Name")}
       {Input("email", "E-Mail")}

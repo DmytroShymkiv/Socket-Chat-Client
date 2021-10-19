@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import methods from "../../pages/SignPages/methods";
 import Form from "./Form";
 import Alert from "../Alert/Alert";

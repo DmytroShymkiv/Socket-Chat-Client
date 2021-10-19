@@ -1,15 +1,49 @@
 @import "./nullstyles";
 @import "./variables";
 
+@font-face {
+  font-family: "TT Norms";
+  src: url("../assets/fonts/TTNorms-Regular.eot");
+  src: url("../assets/fonts/TTNorms-Regular.eot?#iefix") format("embedded-opentype"),
+    url("../assets/fonts/TTNorms-Regular.woff") format("woff"),
+    url("../assets/fonts/TTNorms-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url("../assets/fonts/TTNorms-Medium.eot");
+  src: url("../assets/fonts/TTNorms-Medium.eot?#iefix") format("embedded-opentype"),
+    url("../assets/fonts/TTNorms-Medium.woff") format("woff"),
+    url("../assets/fonts/TTNorms-Medium.ttf") format("truetype");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "TT Norms";
+  src: url("../assets/fonts/TTNorms-Bold.eot");
+  src: url("../assets/fonts/TTNorms-Bold.eot?#iefix") format("embedded-opentype"),
+    url("../assets/fonts/TTNorms-Bold.woff") format("woff"),
+    url("../assets/fonts/TTNorms-Bold.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+}
+
 //Pages
 @import "../pages/SignPages/signPage";
+@import "../pages/ChatPage/chatPage";
 
 //Components
 @import "../components/Form/form";
-@import "../components/Alert/alert";  
+@import "../components/Alert/alert";
+@import "../components/Chat/chat";
+@import "../components/Message/message";
+@import "../components/MessageInput/messageInput";
 
 body {
-  width: 100%;  
+  width: 100%;
   background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
+  font-family: "TT Norms";
 }
-

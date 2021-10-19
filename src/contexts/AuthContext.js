@@ -1,6 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import axios from "axios";
 
+import { getToken, setToken, handleError } from "../utils";
+
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -8,7 +10,12 @@ export function useAuth() {
 }
 
 export default function AuthProvider({ children }) {
-  const [currentUser, setCurrentUser] = useState(null);
+  const initial = {
+    _id: "61643f922306ee179dfdf1ee",
+    firstName: "a",
+    lastName: "a",
+  };
+  const [currentUser, setCurrentUser] = useState(initial);
   const [loading, setLoading] = useState(true);
 
   const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
@@ -16,24 +23,6 @@ export default function AuthProvider({ children }) {
   useEffect(() => {
     setLoading(false); // todo: load logged user
   }, []);
-
-  const handleError = async (callback) => {
-    try {
-      return await callback();
-    } catch (error) {
-      let errors = error.response.data;
-      if (errors.join) errors = errors.join("\n");
-      else if (errors.message) errors = errors.message;
-      return { errors };
-    }
-  };
-
-  const setToken = (token) => {
-    localStorage.setItem("token", token);
-  };
-  const getToken = () => {
-    return localStorage.getItem("token");
-  };
 
   const postUser = async (url, body) => {
     return handleError(async () => {
