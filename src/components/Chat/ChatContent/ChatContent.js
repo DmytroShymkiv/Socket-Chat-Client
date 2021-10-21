@@ -25,22 +25,28 @@ export default function ChatContent() {
       setFetching(true);
     }
   };
-  useEffect(() => {    
+
+  useEffect(() => {
     if (start === count - howMany)
       listRef.current.scrollTop = listRef.current.scrollHeight;
 
-    listRef.current.addEventListener("scroll", handleScroll);
-    return () => listRef.current.removeEventListener("scroll", handleScroll);
+    const list = listRef.current;
+    list.addEventListener("scroll", handleScroll);
+    return () => list.removeEventListener("scroll", handleScroll);
+
+    // eslint-disable-next-line
   }, [count, start]);
 
   const fetchInitialMessages = async () => {
     const fetchedCount = await getChatMessagesCount(selectedChat.chat);
     await getChatRoom(selectedChat.chat, fetchedCount - howMany, howMany);
     setStart(fetchedCount - howMany);
-    setCount(fetchedCount);    
+    setCount(fetchedCount);
   };
-  useEffect(() => {      
+  useEffect(() => {
     fetchInitialMessages();
+
+    // eslint-disable-next-line
   }, [selectedChat.chat.id]);
 
   const fetchNextMessages = async () => {
@@ -52,6 +58,8 @@ export default function ChatContent() {
   };
   useEffect(() => {
     fetchNextMessages();
+
+    // eslint-disable-next-line
   }, [fetching]);
 
   const messagesView = messages

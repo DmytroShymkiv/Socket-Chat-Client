@@ -29,8 +29,12 @@ export default function useSocket() {
 
   useEffect(() => {
     socket.current.on(Actions.ClientMessage, (message) => {
-      addMessage(selectedChat, message);
+      selectedChat &&
+        selectedChat.messages &&
+        addMessage(selectedChat, message);
     });
+
+    // eslint-disable-next-line
   }, [selectedChat]);
 
   const sendMessage = (message) => {

@@ -8,7 +8,7 @@ import { useChats } from "../../contexts/ChatsContext";
 export default function ChatPage() {
   const { getChats } = useChats();
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState({ message: "" });
+  const [error, setError] = useState("");
   
   const fetchChats = async () => {
     const start = 0;
@@ -24,7 +24,7 @@ export default function ChatPage() {
   }, []);
 
   if (loading) return <Loader />;
-  if (error && error.message) return <h1>{error.message}</h1>;
+  if (error) return <h1>{error}</h1>;
 
   return (
     <div className="chat-page">
