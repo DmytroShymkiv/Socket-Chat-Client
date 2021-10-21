@@ -5,20 +5,31 @@ import plus from "../../assets/icons/plus.png";
 import send from "../../assets/icons/navigation-2.png";
 import { useChats } from "../../contexts/ChatsContext";
 
-export default function MessageInput() {
+export default function MessageInput({sendMessage}) {
   const { selectedChat } = useChats();
   const [text, setText] = useState("");
+  
 
-  function handleOnEnter(text) {
-    console.log("enter", text);
+  const handleSend = () => {    
+    sendMessage(text);
+    setText("");
+  };
+
+  function handleOnEnter() {
+    handleSend();
   }
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleSend();
+  };
+
   useEffect(() => {
-    //clear input
+    setText("");
   }, [selectedChat]);
 
   return (
-    <form className="message-form">
+    <form className="message-form" onSubmit={handleSubmit}>
       <button className="message-form__button" type="button">
         <img src={plus} alt="plus" />
       </button>

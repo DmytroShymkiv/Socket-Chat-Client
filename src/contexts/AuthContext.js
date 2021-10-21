@@ -11,9 +11,9 @@ export function useAuth() {
 
 export default function AuthProvider({ children }) {
   const initial = {
-    _id: "61643f922306ee179dfdf1ee",
     firstName: "a",
     lastName: "a",
+    email: "dima.shymkiv@gmail.com",
   };
   const [currentUser, setCurrentUser] = useState(initial);
   const [loading, setLoading] = useState(true);

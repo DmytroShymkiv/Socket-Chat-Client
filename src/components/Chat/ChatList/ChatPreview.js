@@ -4,10 +4,15 @@ import { getTimeAgo } from "../../../utils";
 import { useChats } from "../../../contexts/ChatsContext";
 
 export default function ChatPreview({ chat }) {
-  const { getChatRoom } = useChats();
+  const { selectedChat, setSelectedChat } = useChats();
+
+  const handleClick = () => {
+    if (selectedChat && chat.id === selectedChat.chat.id) return;
+    setSelectedChat({ chat });
+  };
 
   return (
-    <li onClick={() => getChatRoom(chat, 0, 10)} className="chat">
+    <li onClick={handleClick} className="chat">
       <div className="chat__header">
         <img className="chat__header-photo" src={chat.photo} alt="chat" />
         <div className="chat__header-title">

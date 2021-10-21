@@ -10,6 +10,7 @@ export const handleError = async (callback) => {
   try {
     return await callback();
   } catch (error) {
+    console.log(error);
     let errors = error.response.data;
     if (errors.join) errors = errors.join("\n");
     else if (errors.message) errors = errors.message;
@@ -32,6 +33,7 @@ export const getTimeAgo = (time) => {
     { key: "year", value: dateDiff.getFullYear() - 1970 },
     { key: "month", value: dateDiff.getMonth() },
     { key: "day", value: dateDiff / DAY },
+    { key: "hour", value: dateDiff / HOUR },
     { key: "minute", value: dateDiff / MINUTE },
     { key: "second", value: dateDiff / SECOND },
   ];
@@ -39,8 +41,9 @@ export const getTimeAgo = (time) => {
   for (const timeAgo of timesAgo) {
     let { key, value } = timeAgo;
     value = Math.floor(value);
-    if (value > 0) return `${timeAgo.value} ${formatEnding(value, key)} ago`;
+    if (value > 0) return `${value} ${formatEnding(value, key)} ago`;
   }
+  return "now";
 };
 
 const formatEnding = (value, time) => {

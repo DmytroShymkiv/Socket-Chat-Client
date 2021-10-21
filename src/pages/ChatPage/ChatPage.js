@@ -9,7 +9,7 @@ export default function ChatPage() {
   const { getChats } = useChats();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState({ message: "" });
-
+  
   const fetchChats = async () => {
     const start = 0;
     const howMany = 10;
@@ -25,7 +25,7 @@ export default function ChatPage() {
 
   if (loading) return <Loader />;
   if (error && error.message) return <h1>{error.message}</h1>;
-  
+
   return (
     <div className="chat-page">
       <h1>Chat Page</h1>

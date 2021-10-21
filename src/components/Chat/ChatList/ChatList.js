@@ -5,6 +5,7 @@ import ChatPreview from "./ChatPreview";
 
 export default function ChatList() {
   const { chats } = useChats();
+
   return (
     <ul>
       {chats.map((chat) => (
