@@ -13,6 +13,7 @@ export default function ChatsProvider({ children }) {
   const { currentUser } = useAuth();
   const [chats, setChats] = useState([]);
   const [selectedChat, setSelectedChat] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const [start, setStart] = useState(0);
 
@@ -31,6 +32,7 @@ export default function ChatsProvider({ children }) {
           ? [...messages, ...prev.messages]
           : messages,
     }));
+    setLoading(false);
     return messages;
   };
 
@@ -63,12 +65,14 @@ export default function ChatsProvider({ children }) {
     chats,
     selectedChat,
     setSelectedChat,
+    loading,
     start,
     setStart,
     getChats,
     getChatRoom,
     addMessage,
     getChatMessagesCount,
+    setLoading,
   };
 
   return (

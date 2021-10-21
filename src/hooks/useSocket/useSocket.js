@@ -18,21 +18,17 @@ export default function useSocket() {
       },
     });
 
-    socket.current.on(Actions.ClientConnection, (res) => {
-      console.log(res);
-    });
+    socket.current.on(Actions.ClientConnection, (res) => {});
 
-    return () => {
-      socket.current.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
     socket.current.on(Actions.ClientMessage, (message) => {
       selectedChat &&
         selectedChat.messages &&
         addMessage(selectedChat, message);
     });
+
+    return () => {
+      socket.current.disconnect();
+    };
 
     // eslint-disable-next-line
   }, [selectedChat]);

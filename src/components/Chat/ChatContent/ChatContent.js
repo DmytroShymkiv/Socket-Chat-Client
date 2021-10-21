@@ -5,7 +5,8 @@ import MessageFromUser from "../../Message/MessageFromUser";
 import MessageToUser from "../../Message/MessageToUser";
 
 export default function ChatContent() {
-  const { selectedChat, getChatRoom, getChatMessagesCount } = useChats();
+  const { selectedChat, getChatRoom, getChatMessagesCount, setLoading } =
+    useChats();
   const messages = selectedChat.messages;
 
   const [start, setStart] = useState(0);
@@ -44,20 +45,19 @@ export default function ChatContent() {
     setCount(fetchedCount);
   };
   useEffect(() => {
+    setLoading(true);
     fetchInitialMessages();
 
     // eslint-disable-next-line
   }, [selectedChat.chat.id]);
 
   const fetchNextMessages = async () => {
-    if (!fetching) return;
-
     await getChatRoom(selectedChat.chat, start - howMany, howMany);
     setStart((prev) => prev - howMany);
     setFetching(false);
   };
   useEffect(() => {
-    fetchNextMessages();
+    fetching && fetchNextMessages();
 
     // eslint-disable-next-line
   }, [fetching]);

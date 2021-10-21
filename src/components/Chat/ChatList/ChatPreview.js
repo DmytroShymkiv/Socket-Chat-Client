@@ -4,10 +4,10 @@ import { getTimeAgo } from "../../../utils";
 import { useChats } from "../../../contexts/ChatsContext";
 
 export default function ChatPreview({ chat }) {
-  const { selectedChat, setSelectedChat } = useChats();
+  const { selectedChat, setSelectedChat, loading } = useChats();
 
   const handleClick = () => {
-    if (selectedChat && chat.id === selectedChat.chat.id) return;
+    if ((selectedChat && chat.id === selectedChat.chat.id) || loading) return;
     setSelectedChat({ chat });
   };
 
