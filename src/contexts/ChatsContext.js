@@ -41,6 +41,23 @@ export default function ChatsProvider({ children }) {
     addMessageToRoom(room, message);
   };
 
+  const deleteMessage = (id, room) => {
+    // todo: check if this last message in room and remove
+    const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
+    updateLastMessage &&
+      setSelectedChat({ ...room, messages: updatedMessages });
+  };
+
+  const setEditedMessage = (message, room) => {
+    // todo: check if this last message in room and update
+    const updatedMessage = ChatService.setEditedMessage(message, room);
+    updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
+  };
+
+  const getChatMessagesCount = (chat) => {
+    return ChatService.getChatMessagesCount(chat);
+  };
+
   function updateLastMessage(message) {
     const updatedChats = ChatService.updateLastMessage(chats, message);
     setChats(updatedChats);
@@ -57,22 +74,20 @@ export default function ChatsProvider({ children }) {
     }
   }
 
-  const getChatMessagesCount = (chat) => {
-    return ChatService.getChatMessagesCount(chat);
-  };
-
   const value = {
     chats,
     selectedChat,
     setSelectedChat,
     loading,
+    setLoading,
     start,
     setStart,
     getChats,
     getChatRoom,
     addMessage,
+    deleteMessage,
     getChatMessagesCount,
-    setLoading,
+    setEditedMessage,
   };
 
   return (

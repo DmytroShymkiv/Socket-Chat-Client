@@ -74,7 +74,7 @@ export default function ChatContent() {
 
   return (
     <div ref={listRef} className="chatroom__content">
-      {messagesView}
+      {messagesView.reverse()}
     </div>
   );
 }

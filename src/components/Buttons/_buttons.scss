@@ -1,0 +1,16 @@
+.attach-button {
+  //.attach-button__open
+  &__open {
+    position: relative;
+  }
+
+  //.attach-button__more
+  &__more {
+    position: absolute;
+    flex-direction: column;
+    bottom: 100%;    
+    div {
+      margin-bottom: 10px;
+    }
+  }
+}

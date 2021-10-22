@@ -45,6 +45,30 @@ class ChatService {
     return this._get(url);
   }
 
+  setEditedMessage(message, room) {
+    const updatedMessages = [...room.messages];
+    const index = this._findMessageIndex(message.id, room.messages);
+    if(!index) return false;
+   
+    updatedMessages[index].text = message.text;
+    return updatedMessages;
+  }
+
+  deleteMessageFromRoom(id, room) {
+    const updatedMessages = [...room.messages];
+    const index = this._findMessageIndex(id, room.messages);
+    if(!index) return false;
+
+    updatedMessages.splice(index, 1);
+    return updatedMessages;
+  }
+
+  _findMessageIndex(id, messages) {
+    const oldMessage = messages.find((el) => el.id === id);
+    if (!oldMessage) return false;
+    return messages.findIndex((el) => el.id === id);
+  }
+
   _get(url) {
     return handleError(async () => {
       const response = await axios.get(url, {

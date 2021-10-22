@@ -5,6 +5,7 @@ import ChatHeader from "./ChatHeader";
 import { useChats } from "../../../contexts/ChatsContext";
 import MessageInput from "../../MessageInput/MessageInput";
 import useSocket from "../../../hooks/useSocket/useSocket";
+import MessageActionsProvider from "../../../contexts/MessageActionContext";
 
 export default function Chat() {
   const { selectedChat } = useChats();
@@ -13,11 +14,11 @@ export default function Chat() {
   return (
     <div style={{ height: "100%" }}>
       {selectedChat ? (
-        <>
+        <MessageActionsProvider>
           <ChatHeader />
           <ChatContent />
           <MessageInput sendMessage={sendMessage} />
-        </>
+        </MessageActionsProvider>
       ) : (
         <div className="empty-chat">Select chat to start messaging</div>
       )}

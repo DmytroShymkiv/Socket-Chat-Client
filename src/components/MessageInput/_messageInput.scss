@@ -9,6 +9,7 @@
 
   //.message-form__button
   &__button {
+    cursor: pointer;
     margin-right: 10px;
     padding: 8px;
     background: linear-gradient(325.78deg, #2a8bf2 14.76%, #7cb8f7 87.3%);
@@ -16,6 +17,13 @@
     box-shadow: 4px 4px 25px rgba(42, 139, 242, 0.15),
       2px 2px 25px rgba(42, 139, 242, 0.05),
       4px 6px 10px rgba(42, 139, 242, 0.15);
+
+    input {
+      display: none;
+    }
+    label {
+      cursor: pointer;
+    }
   }
 
   //.message-form__input

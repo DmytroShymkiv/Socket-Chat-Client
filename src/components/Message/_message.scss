@@ -1,12 +1,21 @@
 .message {
   display: flex;
   margin-top: 15px;
-  &:first-child {
+  &:last-child {
     margin-top: 0;
   }
   max-width: 85%;
   line-height: 26px;
   font-weight: 500;
+
+  //.message__file
+  &__file {
+    display: flex;
+    align-items: center;
+    img {
+      margin-right: 5px;
+    }
+  }
 }
 
 .message-to {
@@ -27,6 +36,9 @@
     border-radius: 0px 10px 10px 10px;
     color: #ffffff;
     padding: 14px 22px 17px;
+    img {
+      max-width: 100%;
+    }
   }
 }
 
