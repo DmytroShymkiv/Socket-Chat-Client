@@ -5,6 +5,18 @@ import { handleError, setToken, getToken } from "../utils";
 class AuthService {
   BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
+  loadUser(){
+    const url = `${this.BASE_URL}/find`;
+    return handleError(async () => {
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: getToken(),
+        },
+      });
+      return response.data;
+    });
+  }
+
   createUser(user) {
     const url = `${this.BASE_URL}/register/secret`;
     return this._postUser(url, user);

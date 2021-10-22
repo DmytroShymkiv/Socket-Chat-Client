@@ -27,10 +27,7 @@ export default function ChatContent() {
     }
   };
 
-  useEffect(() => {
-    if (start === count - howMany)
-      listRef.current.scrollTop = listRef.current.scrollHeight;
-
+  useEffect(() => {   
     const list = listRef.current;
     list.addEventListener("scroll", handleScroll);
     return () => list.removeEventListener("scroll", handleScroll);

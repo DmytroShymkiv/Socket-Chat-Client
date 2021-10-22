@@ -9,27 +9,29 @@ export function useAuth() {
 }
 
 export default function AuthProvider({ children }) {
-  const initial = {
-    firstName: "a",
-    lastName: "a",
-    email: "dima.shymkiv@gmail.com",
-  };
-  const [currentUser, setCurrentUser] = useState(initial);
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  async function loadUser() {
+    const response = await AuthService.loadUser();
+    !response.errors && setCurrentUser(response);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    setLoading(false); // todo: load logged user
+    loadUser();
   }, []);
 
   const createUser = async (user) => {
     const response = await AuthService.createUser(user);
-    !response.errors &&
-      setCurrentUser({ firstName: user.firstName, lastName: user.lastName });
+    !response.errors && (await loadUser());
     return response;
   };
 
-  const loginUser = (secretKey) => {
-    return AuthService.loginUser(secretKey);
+  const loginUser = async (secretKey) => {
+    const response = await AuthService.loginUser(secretKey);
+    !response.errors && (await loadUser());
+    return response;
   };
 
   const checkEmail = (email) => {
