@@ -34,8 +34,8 @@ export default function Form({ onSubmit, method, children }) {
 
   return (
     <form className="sign-form" onSubmit={handleSubmit}>
-      {method === methods.IN && Input("firstName", "First Name")}
-      {method === methods.IN && Input("lastName", "Last Name")}
+      {method === methods.UP && Input("firstName", "First Name")}
+      {method === methods.UP && Input("lastName", "Last Name")}
       {Input("email", "E-Mail")}
       {Input("password", "Password", "password")}
       <button disabled={loading} className="sign-form__submit" type="submit">

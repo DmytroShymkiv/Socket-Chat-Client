@@ -22,7 +22,7 @@ export default function LoginForm({ onSubmit }) {
   return (
     <>
       <Alert message={error} />
-      <Form onSubmit={loginOnSubmit} method={methods.UP} />
+      <Form onSubmit={loginOnSubmit} method={methods.IN} />
     </>
   );
 }

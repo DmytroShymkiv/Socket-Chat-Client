@@ -1,6 +1,12 @@
+import "./loader.css";
+
 export default function Loader() {
-  // todo: Create styled loader
   return (
-    <div>Loading...</div>
+    <div className="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
   );
 }

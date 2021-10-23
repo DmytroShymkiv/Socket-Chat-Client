@@ -1,0 +1,31 @@
+.user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  //.user__photo
+  &__photo {
+    width: 86px;
+    height: 86px;
+    border-radius: 50%;
+  }
+
+  //.user__name
+  &__name {
+    margin-top: 15px;
+    color: $darkText;
+    display: flex;
+    align-items: center;
+    h4 {
+      font-size: 18px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+  }
+
+  //.user__actions
+  &__actions {
+    margin-top: 3px;
+    margin-left: 6px;
+  }
+}

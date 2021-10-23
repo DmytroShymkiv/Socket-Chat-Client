@@ -4,7 +4,8 @@
 @font-face {
   font-family: "TT Norms";
   src: url("../assets/fonts/TTNorms-Regular.eot");
-  src: url("../assets/fonts/TTNorms-Regular.eot?#iefix") format("embedded-opentype"),
+  src: url("../assets/fonts/TTNorms-Regular.eot?#iefix")
+      format("embedded-opentype"),
     url("../assets/fonts/TTNorms-Regular.woff") format("woff"),
     url("../assets/fonts/TTNorms-Regular.ttf") format("truetype");
   font-weight: normal;
@@ -14,7 +15,8 @@
 @font-face {
   font-family: "TT Norms";
   src: url("../assets/fonts/TTNorms-Medium.eot");
-  src: url("../assets/fonts/TTNorms-Medium.eot?#iefix") format("embedded-opentype"),
+  src: url("../assets/fonts/TTNorms-Medium.eot?#iefix")
+      format("embedded-opentype"),
     url("../assets/fonts/TTNorms-Medium.woff") format("woff"),
     url("../assets/fonts/TTNorms-Medium.ttf") format("truetype");
   font-weight: 500;
@@ -24,7 +26,8 @@
 @font-face {
   font-family: "TT Norms";
   src: url("../assets/fonts/TTNorms-Bold.eot");
-  src: url("../assets/fonts/TTNorms-Bold.eot?#iefix") format("embedded-opentype"),
+  src: url("../assets/fonts/TTNorms-Bold.eot?#iefix")
+      format("embedded-opentype"),
     url("../assets/fonts/TTNorms-Bold.woff") format("woff"),
     url("../assets/fonts/TTNorms-Bold.ttf") format("truetype");
   font-weight: 700;
@@ -41,10 +44,30 @@
 @import "../components/Chat/chat";
 @import "../components/Message/message";
 @import "../components/MessageInput/messageInput";
-@import "../components/Buttons/buttons";  
+@import "../components/Buttons/buttons";
+@import "../components/UserProfile/userProfile";
+@import "../components/TopMenu/topMenu";
+@import "../components/Search/search";
+@import "../components/MessageActions/messageActions";
 
 body {
   width: 100%;
   background: linear-gradient(180deg, #f3f3fb 0%, #fdfbfd 100%);
   font-family: "TT Norms";
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  border: none;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b7bdcb;
+  box-shadow: 4px 4px 15px rgba(112, 124, 151, 0.05),
+    2px 2px 10px rgba(112, 124, 151, 0.1),
+    1px 1px 50px rgba(112, 124, 151, 0.15);
+  border-radius: 10px;
 }

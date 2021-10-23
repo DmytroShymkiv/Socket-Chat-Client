@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { useChats } from "../../../contexts/ChatsContext";
+import Loader from "../../Loader/Loader";
 import MessageFromUser from "../../Message/MessageFromUser";
 import MessageToUser from "../../Message/MessageToUser";
 
@@ -17,17 +18,16 @@ export default function ChatContent() {
 
   const handleScroll = (e) => {
     const { scrollTop, scrollHeight } = e.target;
-    if (
-      scrollTop < 100 &&
-      listRef.current.clientHeight < scrollHeight &&
-      messages.length < count &&
-      start >= 0
-    ) {
+    const { clientHeight } = listRef.current;
+    const isOnTop = scrollHeight - clientHeight + scrollTop < 50;
+    const isScrolled = clientHeight < scrollHeight;
+
+    if (isOnTop && isScrolled && messages.length < count && start >= 0) {
       setFetching(true);
     }
   };
 
-  useEffect(() => {   
+  useEffect(() => {
     const list = listRef.current;
     list.addEventListener("scroll", handleScroll);
     return () => list.removeEventListener("scroll", handleScroll);
@@ -71,7 +71,7 @@ export default function ChatContent() {
 
   return (
     <div ref={listRef} className="chatroom__content">
-      {messagesView.reverse()}
+      {messages ? messagesView.reverse() : <Loader />}
     </div>
   );
 }

@@ -42,12 +42,18 @@ export default function AuthProvider({ children }) {
     return AuthService.loginAuthorization({ email, password });
   };
 
+  const logout = () => {
+    setCurrentUser(null);
+    AuthService.logout();
+  };
+
   const value = {
     currentUser,
     checkEmail,
     loginAuthorization,
     createUser,
     loginUser,
+    logout,
   };
 
   return (

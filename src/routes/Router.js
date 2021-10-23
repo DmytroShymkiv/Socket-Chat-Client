@@ -7,7 +7,7 @@ import ROUTES from "./routes";
 import { useAuth } from "../contexts/AuthContext";
 
 export default function Router() {
-  const { currentUser } = useAuth(); 
+  const { currentUser } = useAuth();
   return (
     <BrowserRouter>
       <Switch>
@@ -26,7 +26,7 @@ export default function Router() {
           </Route>
         ))}
 
-        <Redirect to={ROUTES.SIGN_IN} />
+        <Redirect to={currentUser ? ROUTES.CHAT_PAGE : ROUTES.SIGN_IN} />
       </Switch>
     </BrowserRouter>
   );

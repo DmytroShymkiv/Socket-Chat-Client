@@ -6,6 +6,10 @@ export const getToken = () => {
   return localStorage.getItem("token");
 };
 
+export const removeToken = () => {
+  localStorage.removeItem("token");
+};
+
 export const handleError = async (callback) => {
   try {
     return await callback();

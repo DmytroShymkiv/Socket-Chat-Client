@@ -1,0 +1,47 @@
+.search {
+  background: #ffffff;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 40px;
+
+  //.search__form
+  &__form {
+    padding-left: 40px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    //.search__form-input
+    &-input {
+      font-weight: 500;
+      margin-left: 10px;
+      font-family: TT Norms;
+      font-size: 15px;
+      color: $darkText;
+
+      &::placeholder {
+        font-weight: 500;
+        color: $lightText;
+      }
+    }
+  }
+
+  //.search__filter
+  &__filter {
+    font-weight: 500;
+    padding: 22px 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid #f5f4fb;
+    p {
+      font-size: 15px;
+      text-transform: capitalize;
+      color: $lightText;
+    }
+    img {
+      margin-top: 3px;
+      margin-left: 6px;
+    }
+  }
+}

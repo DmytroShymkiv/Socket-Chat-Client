@@ -1,11 +1,11 @@
 import axios from "axios";
 
-import { handleError, setToken, getToken } from "../utils";
+import { handleError, setToken, getToken, removeToken } from "../utils";
 
 class AuthService {
   BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
-  loadUser(){
+  loadUser() {
     const url = `${this.BASE_URL}/find`;
     return handleError(async () => {
       const response = await axios.get(url, {
@@ -47,6 +47,10 @@ class AuthService {
   loginAuthorization({ email, password }) {
     const url = `${this.BASE_URL}/login`;
     return this._sendSecret(url, { email, password });
+  }
+
+  logout() {
+    removeToken();
   }
 
   _sendSecret(url, body) {

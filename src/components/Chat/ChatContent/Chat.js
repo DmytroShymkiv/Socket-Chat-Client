@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import ChatContent from "./ChatContent";
 import ChatHeader from "./ChatHeader";
@@ -8,8 +8,14 @@ import useSocket from "../../../hooks/useSocket/useSocket";
 import MessageActionsProvider from "../../../contexts/MessageActionContext";
 
 export default function Chat() {
-  const { selectedChat } = useChats();
+  const { selectedChat, setSelectedChat } = useChats();
   const { sendMessage } = useSocket();
+
+  useEffect(() => {
+    return () => {
+      setSelectedChat(null);
+    };
+  }, {});
 
   return (
     <div style={{ height: "100%" }}>

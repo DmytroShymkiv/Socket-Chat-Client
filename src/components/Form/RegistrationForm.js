@@ -21,7 +21,7 @@ export default function RegistrationForm({ onSubmit }) {
   return (
     <>
       <Alert message={error} />
-      <Form onSubmit={registrationOnSubmit} method={methods.IN} />
+      <Form onSubmit={registrationOnSubmit} method={methods.UP} />
     </>
   );
 }
