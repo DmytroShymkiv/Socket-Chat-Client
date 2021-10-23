@@ -15,7 +15,9 @@ export default function Chat() {
     return () => {
       setSelectedChat(null);
     };
-  }, {});
+
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div style={{ height: "100%" }}>

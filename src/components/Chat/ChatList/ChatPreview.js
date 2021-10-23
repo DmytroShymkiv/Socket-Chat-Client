@@ -6,13 +6,18 @@ import { useChats } from "../../../contexts/ChatsContext";
 export default function ChatPreview({ chat }) {
   const { selectedChat, setSelectedChat, loading } = useChats();
 
+  const isSelected = selectedChat && chat.id === selectedChat.chat.id;
+
   const handleClick = () => {
-    if ((selectedChat && chat.id === selectedChat.chat.id) || loading) return;
+    if (isSelected || loading) return;
     setSelectedChat({ chat });
   };
 
   return (
-    <li onClick={handleClick} className="chat">
+    <li
+      onClick={handleClick}
+      className={`chat${isSelected ? " chat-selected" : ""}`}
+    >
       <div className="chat__header">
         <img className="chat__header-photo" src={chat.photo} alt="chat" />
         <div className="chat__header-title">
