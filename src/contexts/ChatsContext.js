@@ -37,19 +37,19 @@ export default function ChatsProvider({ children }) {
   };
 
   const addMessage = (room, message) => {
-    updateLastMessage(message);
-    addMessageToRoom(room, message);
+    updateLastMessage(message);    
+    room && room.messages && addMessageToRoom(room, message);
   };
 
-  const deleteMessage = (id, room) => {
-    // todo: check if this last message in room and remove
+  const deleteMessage = async (id, room) => {
+    await getChats(0, chats.length);
     const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
     updateLastMessage &&
       setSelectedChat({ ...room, messages: updatedMessages });
   };
 
-  const setEditedMessage = (message, room) => {
-    // todo: check if this last message in room and update
+  const setEditedMessage = async (message, room) => {
+    await getChats(0, chats.length);
     const updatedMessage = ChatService.setEditedMessage(message, room);
     updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
   };

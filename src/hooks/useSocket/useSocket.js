@@ -23,11 +23,8 @@ export default function useSocket() {
       console.log(res);
     });
 
-    socket.current.on(Actions.ClientMessage, (message) => {
-      console.log(message);
-      selectedChat &&
-        selectedChat.messages &&
-        addMessage(selectedChat, message); // try to use selected chat inside action ???
+    socket.current.on(Actions.ClientMessage, (message) => {      
+        addMessage(selectedChat, message);
     });
 
     socket.current.on(Actions.ClientUpdate, (message) => {
