@@ -1,0 +1,89 @@
+.chat-modal {
+  width: 400px;
+  //.chat-modal__title
+  &__title {
+    font-size: 36px;
+    font-weight: 700;
+    color: $darkText;
+    margin-bottom: 25px;
+  }
+
+  //.chat-modal__mode
+  &__mode {
+    display: flex;
+    font-weight: 500;
+    font-size: 18px;
+    justify-content: space-around;
+    margin-bottom: 30px;
+  }
+
+  //.chat-modal__form
+  &__form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+
+    //.chat-modal__form-emails
+    &-emails {
+      font-size: 17px;
+      font-weight: 500;
+      margin-bottom: 15px;
+      color: $darkText;
+
+      ul {
+
+        display: flex;
+        flex-wrap: wrap;
+        li {
+          border-radius: 5px;
+          padding: 5px 10px;
+          background: $background1;
+          margin: 5px 5px 0 0;
+          color: $darkText;
+          display: flex;
+          align-items: center;
+          button {
+            font-size: 17px;
+            font-weight: 500;
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+
+    //.chat-modal__form-input
+    &-input {
+      border-bottom: 1px solid $lightText;
+      margin-bottom: 15px;
+      font-size: 18px;
+      font-weight: 500;
+      color: $darkText;
+      &::placeholder {
+        text-transform: capitalize;
+        color: $lightText;
+      }
+    }
+
+    //.chat-modal__form-add
+    &-add {
+      border-radius: 10px;
+      padding: 10px 0;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 16px;
+      margin-top: 10px;
+      background: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+    }
+
+    //.chat-modal__form-submit
+    &-submit {
+      border-radius: 10px;
+      padding: 10px 0;
+      color: #ffffff;
+      font-weight: 500;
+      font-size: 16px;
+      margin-top: 25px;
+      background: linear-gradient(92.68deg, #7cb8f7 0%, #2a8bf2 100%);
+    }
+  }
+}

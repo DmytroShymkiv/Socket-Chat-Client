@@ -29,7 +29,7 @@ export default function TopMenu() {
         <UserProfile />
         <div className="top-menu__links">
           {pageLinks.map((link) => (
-            <PageLink pageLink={link} />
+            <PageLink key={link.name} pageLink={link} />
           ))}
         </div>
 

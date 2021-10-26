@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import useSocket from "../hooks/useSocket/useSocket";
+import { useSocket } from "./SocketContext/SocketContext";
 
 const MessageActionsContext = React.createContext();
 
@@ -19,13 +19,14 @@ export default function MessageActionsProvider({ children }) {
     setMessage({ id, text });
   };
 
-  const editMessage = (text) => {    
+  const editMessage = (text) => {
     updateMessage(message.id, text);
+    setEditing(false);
   };
 
   const value = {
     editing,
-    message,    
+    message,
     startEdit,
     editMessage,
   };

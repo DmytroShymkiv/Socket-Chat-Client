@@ -1,6 +1,6 @@
 import React from "react";
 
-import useSocket from "../../hooks/useSocket/useSocket";
+import {useSocket} from "../../contexts/SocketContext/SocketContext";
 import { useMessageActions } from "../../contexts/MessageActionContext";
 
 export default function MessageAction({ id, text }) {

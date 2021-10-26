@@ -1,24 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 
 import more from "../../../assets/icons/chevron-down.png";
 import plus from "../../../assets/icons/plus.png";
+import ChatForm from "../../ChatForm/ChatForm";
+import Modal from "../../Modal/Modal";
 
-export default function ChatListHeader() {
+export default function ChatListHeader() {  
+  const [isOpen, setIsOpen] = useState(false);
+
+  const onClose = () => setIsOpen(false);
+  const CreateChatModal = () => (
+    <Modal
+      content={<ChatForm onClose={onClose} />}
+      isOpen={isOpen}
+      onClose={onClose}
+    />
+  );
+
   return (
-    <div className="chat-list__header">
-      <div>
-        <h1 className="chat-list__header-title">Chats</h1>
-        <div className="chat-list__header-filter">
-          <p>Recent chats</p>
-          <div>
-            <img src={more} alt="more" />
+    <>
+      <CreateChatModal />
+      <div className="chat-list__header">
+        <div>
+          <h1 className="chat-list__header-title">Chats</h1>
+          <div className="chat-list__header-filter">
+            <p>Recent chats</p>
+            <div>
+              <img src={more} alt="more" />
+            </div>
           </div>
         </div>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="chat-list__header-create"
+        >
+          <img src={plus} alt="plus" />
+          <p>Create New Chat</p>
+        </button>
       </div>
-      <button className="chat-list__header-create">
-        <img src={plus} alt="plus" />
-        <p>Create New Chat</p>
-      </button>
-    </div>
+    </>
   );
 }

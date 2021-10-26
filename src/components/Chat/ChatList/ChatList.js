@@ -11,7 +11,7 @@ export default function ChatList() {
     <>
       <ChatListHeader />
       <Search />
-      <ul>
+      <ul className="chat-list__list">
         {chats.map((chat) => (
           <ChatPreview key={chat.id} chat={chat} />
         ))}

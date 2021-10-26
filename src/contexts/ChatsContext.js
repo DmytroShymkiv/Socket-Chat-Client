@@ -23,6 +23,10 @@ export default function ChatsProvider({ children }) {
     return chats;
   };
 
+  const getAllChats =  () =>{
+    return getChats(0, chats.length);
+  }
+
   const getChatRoom = async (chat, start, howMany) => {
     const messages = await ChatService.getMessages(chat, start, howMany);
     setSelectedChat((prev) => ({
@@ -42,14 +46,14 @@ export default function ChatsProvider({ children }) {
   };
 
   const deleteMessage = async (id, room) => {
-    await getChats(0, chats.length);
+    await getAllChats()
     const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
     updateLastMessage &&
       setSelectedChat({ ...room, messages: updatedMessages });
   };
 
   const setEditedMessage = async (message, room) => {
-    await getChats(0, chats.length);
+    await getAllChats()
     const updatedMessage = ChatService.setEditedMessage(message, room);
     updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
   };
@@ -88,6 +92,7 @@ export default function ChatsProvider({ children }) {
     deleteMessage,
     getChatMessagesCount,
     setEditedMessage,
+    getAllChats,
   };
 
   return (

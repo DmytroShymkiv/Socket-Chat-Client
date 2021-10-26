@@ -1,14 +1,26 @@
-import { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import io from "socket.io-client";
 
 import { getToken } from "../../utils";
 import Actions from "./socketActions";
-import { useChats } from "../../contexts/ChatsContext";
+import { useChats } from "../ChatsContext";
 
-export default function useSocket() {
+const SocketContext = React.createContext();
+
+export function useSocket() {
+  return useContext(SocketContext);
+}
+
+export default function SocketProvider({ children }) {
   const socket = useRef(null);
-  const { selectedChat, addMessage, setEditedMessage, deleteMessage } =
-    useChats();
+  const {
+    selectedChat,
+    addMessage,
+    setEditedMessage,
+    deleteMessage,
+    getAllChats,
+    chats,
+  } = useChats();
 
   useEffect(() => {
     const SERVER_URL = "http://localhost:3001";
@@ -22,9 +34,9 @@ export default function useSocket() {
     socket.current.on(Actions.ClientConnection, (res) => {
       console.log(res);
     });
-
-    socket.current.on(Actions.ClientMessage, (message) => {      
-        addMessage(selectedChat, message);
+    
+    socket.current.on(Actions.ClientMessage, (message) => {
+      addMessage(selectedChat, message);
     });
 
     socket.current.on(Actions.ClientUpdate, (message) => {
@@ -35,12 +47,16 @@ export default function useSocket() {
       selectedChat && deleteMessage(id, selectedChat);
     });
 
+    socket.current.on(Actions.ClientCreateRoom, () => {
+      getAllChats();
+    });
+
     return () => {
       socket.current.disconnect();
     };
 
     // eslint-disable-next-line
-  }, [selectedChat]); // change this dependency ???
+  }, [selectedChat, chats]);
 
   const sendMessage = (message) => {
     socket.current.emit(Actions.ServerSendMessage, {
@@ -62,5 +78,17 @@ export default function useSocket() {
     });
   };
 
-  return { sendMessage, updateMessage, deleteMessageEmit };
+  const createRoom = (users, photo, name) => {
+    socket.current.emit(Actions.ServerCreateRoom, {
+      users,
+      photo,
+      name,
+    });
+  };
+
+  const value = { sendMessage, updateMessage, deleteMessageEmit, createRoom };
+
+  return (
+    <SocketContext.Provider value={value}>{children}</SocketContext.Provider>
+  );
 }

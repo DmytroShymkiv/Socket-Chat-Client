@@ -1,38 +1,6 @@
 @import "./nullstyles";
 @import "./variables";
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("../assets/fonts/TTNorms-Regular.eot");
-  src: url("../assets/fonts/TTNorms-Regular.eot?#iefix")
-      format("embedded-opentype"),
-    url("../assets/fonts/TTNorms-Regular.woff") format("woff"),
-    url("../assets/fonts/TTNorms-Regular.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("../assets/fonts/TTNorms-Medium.eot");
-  src: url("../assets/fonts/TTNorms-Medium.eot?#iefix")
-      format("embedded-opentype"),
-    url("../assets/fonts/TTNorms-Medium.woff") format("woff"),
-    url("../assets/fonts/TTNorms-Medium.ttf") format("truetype");
-  font-weight: 500;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: "TT Norms";
-  src: url("../assets/fonts/TTNorms-Bold.eot");
-  src: url("../assets/fonts/TTNorms-Bold.eot?#iefix")
-      format("embedded-opentype"),
-    url("../assets/fonts/TTNorms-Bold.woff") format("woff"),
-    url("../assets/fonts/TTNorms-Bold.ttf") format("truetype");
-  font-weight: 700;
-  font-style: normal;
-}
+@import "./fonts";
 
 //Pages
 @import "../pages/SignPages/signPage";
@@ -49,6 +17,8 @@
 @import "../components/TopMenu/topMenu";
 @import "../components/Search/search";
 @import "../components/MessageActions/messageActions";
+@import "../components/Modal/modal";
+@import "../components/ChatForm/chatForm";
 
 body {
   width: 100%;
@@ -62,6 +32,8 @@ body {
 
 ::-webkit-scrollbar-track {
   border: none;
+  box-shadow: none;
+  background: rgba(0, 0, 0, 0);
 }
 
 ::-webkit-scrollbar-thumb {

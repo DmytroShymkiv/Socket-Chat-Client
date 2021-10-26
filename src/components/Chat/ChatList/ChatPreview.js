@@ -23,9 +23,9 @@ export default function ChatPreview({ chat }) {
         <div className="chat__header-title">
           <div className="chat__header-name">
             <div className="chat__header-roomname">{chat.name}</div>
-            <div>{chat.status}</div>
+            <div>{chat.online ? "online" : "offline"}</div>
           </div>
-          <div className="chat__header-time">{getTimeAgo(chat.time)}</div>
+          <div className="chat__header-time">{chat.message && getTimeAgo(chat.time)}</div>
         </div>
       </div>
       <div className="chat__message">
