@@ -8,6 +8,11 @@
     width: 86px;
     height: 86px;
     border-radius: 50%;
+
+    @media (max-width: $md1) {
+      width: 36px;
+      height: 36px;
+    }
   }
 
   //.user__name
@@ -20,6 +25,9 @@
       font-size: 18px;
       font-weight: 500;
       white-space: nowrap;
+    }
+    @media (max-width: $md1) {
+      display: none;
     }
   }
 

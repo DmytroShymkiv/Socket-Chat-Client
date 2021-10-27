@@ -54,3 +54,7 @@ const formatEnding = (value, time) => {
   if (value > 1) time = time + "s";
   return time;
 };
+
+export const sortChats = (chats) => {
+  return chats.sort((a, b) => b.time - a.time);
+};

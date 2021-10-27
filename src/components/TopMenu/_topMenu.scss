@@ -1,5 +1,4 @@
 .top-menu {
-  max-width: 20vw;
   //.top-menu__content
   &__content {
     height: 100vh;
@@ -7,6 +6,10 @@
     padding: 90px 50px 50px 50px;
     display: flex;
     flex-direction: column;
+    @media (max-width: $md1) {
+      padding: 90px 5px 30px 5px;
+      align-items: center;
+    }
   }
 
   //.top-menu__links
@@ -19,13 +22,16 @@
 
     a {
       display: flex;
-      align-items: center;  
+      align-items: center;
       text-align: center;
       h5 {
         margin-left: 17px;
         text-transform: uppercase;
         font-weight: 700;
         font-size: 16px;
+        @media (max-width: $md1) {
+          display: none;
+        }
       }
     }
   }
@@ -35,11 +41,16 @@
   display: flex;
   align-items: center;
   margin-top: auto;
+
+  //.logout__title
   &__title {
     font-weight: 700;
     font-size: 16px;
     text-transform: uppercase;
     color: $lightText;
     margin-left: 17px;
+    @media (max-width: $md1) {
+      display: none;
+    }
   }
 }

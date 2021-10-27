@@ -34,7 +34,7 @@ export default function SocketProvider({ children }) {
     socket.current.on(Actions.ClientConnection, (res) => {
       console.log(res);
     });
-    
+
     socket.current.on(Actions.ClientMessage, (message) => {
       addMessage(selectedChat, message);
     });
@@ -58,10 +58,11 @@ export default function SocketProvider({ children }) {
     // eslint-disable-next-line
   }, [selectedChat, chats]);
 
-  const sendMessage = (message) => {
+  const sendMessage = (message, file) => {
     socket.current.emit(Actions.ServerSendMessage, {
       room: selectedChat.chat.id,
       message,
+      file,
     });
   };
 

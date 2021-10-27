@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 
 import { useAuth } from "./AuthContext";
 import ChatService from "../services/ChatService";
+import { sortChats } from "../utils";
 
 const ChatsContext = React.createContext();
 
@@ -23,9 +24,9 @@ export default function ChatsProvider({ children }) {
     return chats;
   };
 
-  const getAllChats =  () =>{
-    return getChats(0, chats.length);
-  }
+  const getAllChats = () => {
+    return getChats(0, 0);
+  };
 
   const getChatRoom = async (chat, start, howMany) => {
     const messages = await ChatService.getMessages(chat, start, howMany);
@@ -41,19 +42,22 @@ export default function ChatsProvider({ children }) {
   };
 
   const addMessage = (room, message) => {
-    updateLastMessage(message);    
+    updateLastMessage(message);
     room && room.messages && addMessageToRoom(room, message);
+    document.getElementById("messagesEnd").scrollIntoView({
+      behavior: "smooth",
+    });
   };
 
   const deleteMessage = async (id, room) => {
-    await getAllChats()
+    await getAllChats();
     const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
     updateLastMessage &&
       setSelectedChat({ ...room, messages: updatedMessages });
   };
 
   const setEditedMessage = async (message, room) => {
-    await getAllChats()
+    await getAllChats();
     const updatedMessage = ChatService.setEditedMessage(message, room);
     updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
   };
@@ -79,7 +83,7 @@ export default function ChatsProvider({ children }) {
   }
 
   const value = {
-    chats,
+    chats: sortChats(chats),
     selectedChat,
     setSelectedChat,
     loading,

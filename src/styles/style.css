@@ -159,6 +159,12 @@ h6 {
   position: relative;
 }
 
+@media (max-width: 1020px) {
+  .chat-page {
+    padding: 15px;
+  }
+}
+
 .chat-page__content {
   height: 100%;
   display: -webkit-box;
@@ -173,8 +179,20 @@ h6 {
   width: 43%;
 }
 
+@media (max-width: 1020px) {
+  .chat-page__list {
+    width: 100%;
+  }
+}
+
 .chat-page__chat {
   width: 52%;
+}
+
+@media (max-width: 1020px) {
+  .chat-page__chat {
+    width: 100%;
+  }
 }
 
 .sign-form {
@@ -354,6 +372,7 @@ h6 {
 .chat__header-roomname {
   font-weight: 700;
   font-size: 18px;
+  margin-right: 10px;
 }
 
 .chat__header-time {
@@ -375,6 +394,11 @@ h6 {
 .chat__message-text {
   color: #707c97;
   font-size: 16px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 .chat__message-time {
@@ -409,6 +433,12 @@ h6 {
   border-bottom: 1px solid rgba(112, 124, 151, 0.1);
 }
 
+@media (max-width: 1020px) {
+  .chatroom__header {
+    padding: 10px 5px;
+  }
+}
+
 .chatroom__header-about {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -426,6 +456,12 @@ h6 {
   width: 54px;
   height: 54px;
   border-radius: 50%;
+}
+
+@media (max-width: 1020px) {
+  .chatroom__header-about img {
+    margin-left: 10px;
+  }
 }
 
 .chatroom__header-info {
@@ -469,11 +505,18 @@ h6 {
       -ms-flex-direction: column-reverse;
           flex-direction: column-reverse;
   overflow-y: auto;
-  max-height: 60vh;
+  max-height: calc(100vh - 130px - 115px - 50px);
+}
+
+@media (max-width: 1020px) {
+  .chatroom__content {
+    padding: 10px 5px;
+    max-height: calc(100vh - 75px - 52px - 30px);
+  }
 }
 
 .empty-chat {
-  height: 95%;
+  height: 100%;
   background: #fafbff;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -486,6 +529,7 @@ h6 {
           align-items: center;
   font-size: 26px;
   font-weight: 700;
+  text-align: center;
 }
 
 .chat-list__header {
@@ -607,11 +651,29 @@ h6 {
   max-width: 100%;
 }
 
+@media (max-width: 1020px) {
+  .message-to__content {
+    margin: 0 4px 0 6px;
+  }
+}
+
 .message-from {
   margin-left: auto;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+}
+
+@media (max-width: 1020px) {
+  .message-from {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-align: end;
+        -ms-flex-align: end;
+            align-items: flex-end;
+  }
 }
 
 .message-from__content {
@@ -624,6 +686,12 @@ h6 {
   color: #707c97;
 }
 
+@media (max-width: 1020px) {
+  .message-from__content {
+    margin: 0;
+  }
+}
+
 .message-form {
   margin-top: auto;
   display: -webkit-box;
@@ -633,9 +701,14 @@ h6 {
       -ms-flex-align: center;
           align-items: center;
   border-top: 2px solid rgba(112, 124, 151, 0.15);
-  padding-top: 20px;
   padding: 30px 60px;
   background: #ffffff;
+}
+
+@media (max-width: 1020px) {
+  .message-form {
+    padding: 0;
+  }
 }
 
 .message-form__button {
@@ -731,6 +804,13 @@ h6 {
   border-radius: 50%;
 }
 
+@media (max-width: 1250px) {
+  .user__photo {
+    width: 36px;
+    height: 36px;
+  }
+}
+
 .user__name {
   margin-top: 15px;
   color: #0d1c2e;
@@ -748,13 +828,15 @@ h6 {
   white-space: nowrap;
 }
 
+@media (max-width: 1250px) {
+  .user__name {
+    display: none;
+  }
+}
+
 .user__actions {
   margin-top: 3px;
   margin-left: 6px;
-}
-
-.top-menu {
-  max-width: 20vw;
 }
 
 .top-menu__content {
@@ -768,6 +850,15 @@ h6 {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
+}
+
+@media (max-width: 1250px) {
+  .top-menu__content {
+    padding: 90px 5px 30px 5px;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
 }
 
 .top-menu__links {
@@ -802,6 +893,12 @@ h6 {
   font-size: 16px;
 }
 
+@media (max-width: 1250px) {
+  .top-menu__links a h5 {
+    display: none;
+  }
+}
+
 .logout {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -818,6 +915,12 @@ h6 {
   text-transform: uppercase;
   color: #707c97;
   margin-left: 17px;
+}
+
+@media (max-width: 1250px) {
+  .logout__title {
+    display: none;
+  }
 }
 
 .search {

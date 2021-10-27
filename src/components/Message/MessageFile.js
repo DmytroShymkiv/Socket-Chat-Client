@@ -13,7 +13,7 @@ export default function MessageFile({ file }) {
     const fileType = nameSplitByDot[nameSplitByDot.length - 1];
 
     if (fileType === "jpeg" || fileType === "png" || fileType === "jpg")
-      setImage(FilesService.BASE_URL + file.name);
+      setImage(file.href);
 
     // eslint-disable-next-line
   }, []);
@@ -23,10 +23,11 @@ export default function MessageFile({ file }) {
   };
 
   function File() {
+    const name = file.name.split("$").slice(1).join("");
     return (
       <div className="message__file" onClick={handleClick}>
         <img src={fileImage} alt="file" />
-        <p>{file.name}</p>
+        <p>{name}</p>
       </div>
     );
   }

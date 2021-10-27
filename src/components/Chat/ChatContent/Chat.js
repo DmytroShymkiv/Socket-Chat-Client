@@ -4,7 +4,7 @@ import ChatContent from "./ChatContent";
 import ChatHeader from "./ChatHeader";
 import { useChats } from "../../../contexts/ChatsContext";
 import MessageInput from "../../MessageInput/MessageInput";
-import {useSocket} from "../../../contexts/SocketContext/SocketContext";
+import { useSocket } from "../../../contexts/SocketContext/SocketContext";
 import MessageActionsProvider from "../../../contexts/MessageActionContext";
 
 export default function Chat() {

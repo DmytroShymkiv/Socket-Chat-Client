@@ -5,16 +5,16 @@ import ChatList from "../../components/Chat/ChatList/ChatList";
 import Loader from "../../components/Loader/Loader";
 import TopMenu from "../../components/TopMenu/TopMenu";
 import { useChats } from "../../contexts/ChatsContext";
+import HideProvider, { useHide } from "../../contexts/HideContext";
 
-export default function ChatPage() {
+function ChatPage() {
   const { getChats } = useChats();
+  const { isListHidden, isChatHidden } = useHide();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const fetchChats = async () => {
-    const start = 0;
-    const howMany = 10;
-    const response = await getChats(start, howMany);
+    const response = await getChats(0, 0);
     response.errors && setError(response.errors);
     setLoading(false);
   };
@@ -34,15 +34,25 @@ export default function ChatPage() {
           <Loader />
         ) : (
           <div className="chat-page__content">
-            <div className="chat-page__list">
-              <ChatList />
-            </div>
-            <div className="chat-page__chat">
-              <Chat />
-            </div>
+            {!isListHidden && (
+              <div className="chat-page__list">
+                <ChatList />
+              </div>
+            )}
+            {!isChatHidden && (
+              <div className="chat-page__chat">
+                <Chat />
+              </div>
+            )}
           </div>
         )}
       </div>
     </div>
   );
 }
+
+export default () => (
+  <HideProvider>
+    <ChatPage />
+  </HideProvider>
+);

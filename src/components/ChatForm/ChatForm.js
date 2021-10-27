@@ -42,6 +42,14 @@ export default function ChatForm({ onClose }) {
     setRoom((prev) => ({ ...prev, users: users(prev) }));
   };
 
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setRoom((prev) => ({
+      ...prev,
+      photo: { originalName: file.name, size: file.size, buffer: file },
+    }));
+  };
+
   function UserEmail({ email }) {
     return (
       <li>
@@ -80,7 +88,18 @@ export default function ChatForm({ onClose }) {
         <form onSubmit={handleSubmit} className="chat-modal__form">
           {isRoom && (
             <>
-              {Input("photo")}
+              <div>
+                <label htmlFor="photo">
+                  Photo
+                </label>
+
+                <input
+                  id="photo"
+                  type="file"
+                  accept=".jpg, .jpeg, .png, .svg"
+                  onChange={handleFileChange}
+                />
+              </div>
               {Input("name")}
               <div className="chat-modal__form-emails">
                 <p>Users</p>

@@ -3,9 +3,12 @@
   display: flex;
   align-items: center;
   border-top: 2px solid rgba(112, 124, 151, 0.15);
-  padding-top: 20px;
   padding: 30px 60px;
   background: #ffffff;
+
+  @media (max-width: $md2) {
+    padding: 0;
+  }
 
   //.message-form__button
   &__button {

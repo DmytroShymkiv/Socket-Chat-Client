@@ -57,7 +57,7 @@ class ChatService {
   deleteMessageFromRoom(id, room) {
     const updatedMessages = [...room.messages];
     const index = this._findMessageIndex(id, room.messages);
-    if (!index) return false;
+    if (!index) return [];
 
     updatedMessages.splice(index, 1);
     return updatedMessages;

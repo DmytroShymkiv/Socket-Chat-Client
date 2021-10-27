@@ -10,9 +10,10 @@ export default function MessageInput({ sendMessage }) {
   const { selectedChat } = useChats();
   const { editing, message, editMessage } = useMessageActions();
   const [text, setText] = useState(message.text || "");
+  const [file, setFile] = useState(null);
 
   const handleSend = () => {
-    editing ? editMessage(text) : sendMessage(text);
+    editing ? editMessage(text) : sendMessage(text, file);
     setText("");
   };
 
@@ -30,12 +31,19 @@ export default function MessageInput({ sendMessage }) {
   }, [selectedChat]);
 
   useEffect(() => {
+    file && handleSend();
+  }, [file]);
+
+  useEffect(() => {
     message.text && setText(message.text);
   }, [message]);
 
   return (
-    <form className="message-form" onSubmit={handleSubmit}>
-      <AttachButton />
+    <form
+      className="message-form"
+      onSubmit={handleSubmit}
+    >
+      <AttachButton setFile={(f) => setFile(f)} />
       <InputEmoji
         className="message-form__input"
         placeholder="Type a message here"
