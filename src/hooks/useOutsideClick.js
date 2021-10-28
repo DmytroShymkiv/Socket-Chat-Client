@@ -12,5 +12,7 @@ export default function useOutsideClick(ref, onClick) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+    
+    // eslint-disable-next-line
   }, [ref]);
 }

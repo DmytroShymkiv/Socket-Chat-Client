@@ -1,13 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 
 import more from "../../assets/icons/more-horizontal.png";
 import send from "../../assets/icons/checkmark.png";
 import read from "../../assets/icons/all-done.png";
 import MessageFile from "./MessageFile";
 import MessageAction from "../MessageActions/MessageAction";
+import { useUI } from "../../contexts/UIContext";
 
 export default function MessageFromUser({ message }) {
-  const [showActions, setShowActions] = useState(false);
+  const { messages } = useUI();
+  const { showActionID, setShowActionID, cancelEdit } = messages;
+  const isActionShowed = showActionID === message.id;
+
   const getMessageStatus = () => {
     switch (message.status) {
       case "read":
@@ -19,10 +23,15 @@ export default function MessageFromUser({ message }) {
     }
   };
 
+  const handleClick = () => {
+    setShowActionID(!isActionShowed && message.id);
+    isActionShowed && cancelEdit();
+  };
+
   return (
     <div className="message message-from">
-      {showActions && <MessageAction id={message.id} text={message.text} />}
-      <button onClick={() => setShowActions((prev) => !prev)}>
+      {isActionShowed && <MessageAction id={message.id} text={message.text} />}
+      <button onClick={handleClick}>
         <img src={more} alt="more" />
       </button>
       <div className="message-from__content">

@@ -3,17 +3,18 @@ import InputEmoji from "react-input-emoji";
 
 import send from "../../assets/icons/navigation-2.png";
 import { useChats } from "../../contexts/ChatsContext";
-import { useMessageActions } from "../../contexts/MessageActionContext";
+import { useUI } from "../../contexts/UIContext";
 import AttachButton from "../Buttons/AttachButton";
 
 export default function MessageInput({ sendMessage }) {
   const { selectedChat } = useChats();
-  const { editing, message, editMessage } = useMessageActions();
+  const { messages } = useUI();
+  const { message, editMessage } = messages;
   const [text, setText] = useState(message.text || "");
   const [file, setFile] = useState(null);
 
   const handleSend = () => {
-    editing ? editMessage(text) : sendMessage(text, file);
+    message.id ? editMessage(text) : sendMessage(text, file);
     setText("");
   };
 
@@ -28,10 +29,14 @@ export default function MessageInput({ sendMessage }) {
 
   useEffect(() => {
     setText("");
-  }, [selectedChat]);
+
+    // eslint-disable-next-line
+  }, [selectedChat, message]);
 
   useEffect(() => {
     file && handleSend();
+
+    // eslint-disable-next-line
   }, [file]);
 
   useEffect(() => {
@@ -39,10 +44,7 @@ export default function MessageInput({ sendMessage }) {
   }, [message]);
 
   return (
-    <form
-      className="message-form"
-      onSubmit={handleSubmit}
-    >
+    <form className="message-form" onSubmit={handleSubmit}>
       <AttachButton setFile={(f) => setFile(f)} />
       <InputEmoji
         className="message-form__input"

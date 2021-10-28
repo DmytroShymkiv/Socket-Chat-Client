@@ -1027,6 +1027,11 @@ h6 {
   margin-top: 0;
 }
 
+.message-actions button:last-child {
+  margin-top: 15px;
+  color: #2a8bf2;
+}
+
 .modal {
   display: -webkit-box;
   display: -ms-flexbox;

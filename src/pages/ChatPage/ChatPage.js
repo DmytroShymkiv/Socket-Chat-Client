@@ -5,11 +5,12 @@ import ChatList from "../../components/Chat/ChatList/ChatList";
 import Loader from "../../components/Loader/Loader";
 import TopMenu from "../../components/TopMenu/TopMenu";
 import { useChats } from "../../contexts/ChatsContext";
-import HideProvider, { useHide } from "../../contexts/HideContext";
+import { useUI } from "../../contexts/UIContext";
 
-function ChatPage() {
+export default function ChatPage() {
   const { getChats } = useChats();
-  const { isListHidden, isChatHidden } = useHide();
+  const { responsive } = useUI();
+  const { isListHidden, isChatHidden } = responsive;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -50,9 +51,3 @@ function ChatPage() {
     </div>
   );
 }
-
-export default () => (
-  <HideProvider>
-    <ChatPage />
-  </HideProvider>
-);

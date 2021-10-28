@@ -3,6 +3,7 @@ import React from "react";
 import AuthProvider from "./contexts/AuthContext";
 import ChatsProvider from "./contexts/ChatsContext";
 import SocketProvider from "./contexts/SocketContext/SocketContext";
+import UIProvider from "./contexts/UIContext";
 import Router from "./routes/Router";
 
 function App() {
@@ -10,7 +11,9 @@ function App() {
     <AuthProvider>
       <ChatsProvider>
         <SocketProvider>
-          <Router />
+          <UIProvider>
+            <Router />
+          </UIProvider>
         </SocketProvider>
       </ChatsProvider>
     </AuthProvider>

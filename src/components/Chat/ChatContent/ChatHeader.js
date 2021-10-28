@@ -1,12 +1,13 @@
 import React from "react";
 
 import { useChats } from "../../../contexts/ChatsContext";
-import { useHide } from "../../../contexts/HideContext";
+import { useUI } from "../../../contexts/UIContext";
 import attach from "../../../assets/icons/attach-2.png";
 import more from "../../../assets/icons/more-vertical.png";
 
 export default function ChatHeader() {
-  const { isSomeHidden, hideChat } = useHide();
+  const { responsive } = useUI();
+  const { isSomeHidden, hideChat } = responsive;
   const { selectedChat } = useChats();
   const chat = selectedChat.chat;
 

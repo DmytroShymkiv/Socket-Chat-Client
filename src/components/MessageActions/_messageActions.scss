@@ -15,5 +15,9 @@
     &:first-child {
       margin-top: 0;
     }
+    &:last-child {
+      margin-top: 15px;
+      color: $active;
+    }
   }
 }

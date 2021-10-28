@@ -2,11 +2,12 @@ import React from "react";
 
 import { getTimeAgo } from "../../../utils";
 import { useChats } from "../../../contexts/ChatsContext";
-import { useHide } from "../../../contexts/HideContext";
+import { useUI } from "../../../contexts/UIContext";
 
 export default function ChatPreview({ chat }) {
   const { selectedChat, setSelectedChat, loading } = useChats();
-  const { hideList } = useHide();
+  const {responsive} = useUI();
+  const { hideList } = responsive;
 
   const isSelected = selectedChat && chat.id === selectedChat.chat.id;
 
