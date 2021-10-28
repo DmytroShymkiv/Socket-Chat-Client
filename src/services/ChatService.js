@@ -21,11 +21,19 @@ class ChatService {
     return this._get(url);
   }
 
+  getChatNameById = (id, chats) => {
+    const chat = chats.find((chat) => chat.id === id);
+    return chat && chat.name;
+  };
+
   updateLastMessage(chats, message) {
     const updatedChats = [...chats];
     const chatIndex = updatedChats.findIndex((el) => el.id === message.room);
+    const fileName = message.file ? message.file.name : "";
     updatedChats[chatIndex].message = message.text;
     updatedChats[chatIndex].time = message.date;
+    if (fileName) updatedChats[chatIndex].file = fileName;
+    else updatedChats[chatIndex].file = null;
     return updatedChats;
   }
 

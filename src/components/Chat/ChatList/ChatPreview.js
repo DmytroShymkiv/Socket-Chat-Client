@@ -3,10 +3,11 @@ import React from "react";
 import { getTimeAgo } from "../../../utils";
 import { useChats } from "../../../contexts/ChatsContext";
 import { useUI } from "../../../contexts/UIContext";
+import FilesService from "../../../services/FilesService";
 
 export default function ChatPreview({ chat }) {
   const { selectedChat, setSelectedChat, loading } = useChats();
-  const {responsive} = useUI();
+  const { responsive } = useUI();
   const { hideList } = responsive;
 
   const isSelected = selectedChat && chat.id === selectedChat.chat.id;
@@ -16,6 +17,8 @@ export default function ChatPreview({ chat }) {
     setSelectedChat({ chat });
     hideList();
   };
+  
+  const fileName = FilesService.formatName(chat.file);
 
   return (
     <li
@@ -35,7 +38,12 @@ export default function ChatPreview({ chat }) {
         </div>
       </div>
       <div className="chat__message">
-        <p className="chat__message-text">{chat.message}</p>
+        <div className="chat__message-text">
+          {chat.message && chat.message.trim().length > 0 && (
+            <p>{chat.message}</p>
+          )}
+          <p>{fileName}</p>
+        </div>
         {chat.noChecked > 0 && (
           <div className="chat__message-time">{chat.noChecked}</div>
         )}

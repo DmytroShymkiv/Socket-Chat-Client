@@ -23,7 +23,8 @@ export default function MessageFile({ file }) {
   };
 
   function File() {
-    const name = file.name.split("$").slice(1).join("");
+    const name = FilesService.formatName(file.name);
+    
     return (
       <div className="message__file" onClick={handleClick}>
         <img src={fileImage} alt="file" />

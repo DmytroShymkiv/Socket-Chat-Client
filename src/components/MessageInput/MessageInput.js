@@ -16,6 +16,7 @@ export default function MessageInput({ sendMessage }) {
   const handleSend = () => {
     message.id ? editMessage(text) : sendMessage(text, file);
     setText("");
+    setFile(null);
   };
 
   function handleOnEnter() {
@@ -29,6 +30,7 @@ export default function MessageInput({ sendMessage }) {
 
   useEffect(() => {
     setText("");
+    setFile(null);
 
     // eslint-disable-next-line
   }, [selectedChat, message]);

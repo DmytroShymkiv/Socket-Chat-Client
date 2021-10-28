@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Chat from "../../components/Chat/ChatContent/Chat";
 import ChatList from "../../components/Chat/ChatList/ChatList";
 import Loader from "../../components/Loader/Loader";
+import Toast from "../../components/Toast/ToastContainer";
 import TopMenu from "../../components/TopMenu/TopMenu";
 import { useChats } from "../../contexts/ChatsContext";
 import { useUI } from "../../contexts/UIContext";
@@ -29,6 +30,7 @@ export default function ChatPage() {
 
   return (
     <div style={{ display: "flex" }}>
+      <Toast />
       <TopMenu />
       <div className="chat-page">
         {loading ? (

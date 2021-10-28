@@ -8,19 +8,20 @@ export default function ChatForm({ onClose }) {
   const { currentUser } = useAuth();
   const [isRoom, setIsRoom] = useState(false);
   const [email, setEmail] = useState("");
-
-  const [room, setRoom] = useState({
+ 
+  const initialRoomState = {
     users: [currentUser.email],
-  });
+    name: "",
+    photo: "",
+  };
+  const [room, setRoom] = useState(initialRoomState);
 
   const getParams = (mode) => ({
     style: { textDecoration: (mode ? isRoom : !isRoom) ? "underline" : "none" },
     onClick: () => {
       setIsRoom(mode);
       setEmail("");
-      setRoom({
-        users: [currentUser.email],
-      });
+      setRoom(initialRoomState);
     },
   });
 
@@ -89,9 +90,7 @@ export default function ChatForm({ onClose }) {
           {isRoom && (
             <>
               <div>
-                <label htmlFor="photo">
-                  Photo
-                </label>
+                <label htmlFor="photo">Photo</label>
 
                 <input
                   id="photo"

@@ -12,15 +12,15 @@ export default function AuthProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    loadUser();
+  }, []);
+  
   async function loadUser() {
     const response = await AuthService.loadUser();
     !response.errors && setCurrentUser(response);
     setLoading(false);
   }
-
-  useEffect(() => {
-    loadUser();
-  }, []);
 
   const createUser = async (user) => {
     const response = await AuthService.createUser(user);

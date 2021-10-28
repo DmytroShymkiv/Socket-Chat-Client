@@ -28,6 +28,10 @@ export default function ChatsProvider({ children }) {
     return getChats(0, 0);
   };
 
+  const addRoom = (room) => {
+    setChats([...chats, room]);
+  };
+
   const getChatRoom = async (chat, start, howMany) => {
     const messages = await ChatService.getMessages(chat, start, howMany);
     setSelectedChat((prev) => ({
@@ -44,13 +48,16 @@ export default function ChatsProvider({ children }) {
   const addMessage = (room, message) => {
     updateLastMessage(message);
     room && room.messages && addMessageToRoom(room, message);
-    document.getElementById("messagesEnd").scrollIntoView({
-      behavior: "smooth",
-    });
+    const anchor = document.getElementById("messagesEnd");
+    anchor &&
+      anchor.scrollIntoView({
+        behavior: "smooth",
+      });
   };
 
   const deleteMessage = async (id, room) => {
     await getAllChats();
+    if(!room || !room.messages) return
     const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
     updateLastMessage &&
       setSelectedChat({ ...room, messages: updatedMessages });
@@ -58,6 +65,7 @@ export default function ChatsProvider({ children }) {
 
   const setEditedMessage = async (message, room) => {
     await getAllChats();
+    if(!room || !room.messages) return
     const updatedMessage = ChatService.setEditedMessage(message, room);
     updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
   };
@@ -96,7 +104,7 @@ export default function ChatsProvider({ children }) {
     deleteMessage,
     getChatMessagesCount,
     setEditedMessage,
-    getAllChats,
+    addRoom,
   };
 
   return (

@@ -58,11 +58,11 @@ export default function AttachButton({ setFile }) {
         <img src={plus} alt="plus" />
       </button>
       {showMore && (
-        <form enctype="multipart/form-data" className="attach-button__more">
+        <div className="attach-button__more">
           <Button name="file" />
           <Button name="photo" />
           <Button name="film" />
-        </form>
+        </div>
       )}
     </div>
   );

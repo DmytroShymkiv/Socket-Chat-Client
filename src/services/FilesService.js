@@ -8,10 +8,14 @@ class FileService {
         let URL = window.URL.createObjectURL(blob);
         let a = document.createElement("a");
         a.href = URL;
-        a.download = fileName.split("$").slice(1).join("");
+        a.download = this.formatName(fileName);
         a.click();
       });
     });
+  }
+
+  formatName(name) {
+    return name ? name.split("$").slice(1).join("") : "";
   }
 }
 

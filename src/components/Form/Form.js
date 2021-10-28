@@ -4,7 +4,13 @@ import methods from "../../pages/SignPages/methods";
 import Loader from "../Loader/Loader";
 
 export default function Form({ onSubmit, method, children }) {
-  const [user, setUser] = useState({});
+  const isSignUp = method === methods.UP;
+  const [user, setUser] = useState({
+    ...(isSignUp && { firstName: "", lastName: "" }),
+    email: "",
+    password: "",
+  });
+  
   const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -34,8 +40,12 @@ export default function Form({ onSubmit, method, children }) {
 
   return (
     <form className="sign-form" onSubmit={handleSubmit}>
-      {method === methods.UP && Input("firstName", "First Name")}
-      {method === methods.UP && Input("lastName", "Last Name")}
+      {isSignUp && (
+        <>
+          {Input("firstName", "First Name")}
+          {Input("lastName", "Last Name")}
+        </>
+      )}
       {Input("email", "E-Mail")}
       {Input("password", "Password", "password")}
       <button disabled={loading} className="sign-form__submit" type="submit">
