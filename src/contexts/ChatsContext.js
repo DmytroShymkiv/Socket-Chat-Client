@@ -57,15 +57,20 @@ export default function ChatsProvider({ children }) {
 
   const deleteMessage = async (id, room) => {
     await getAllChats();
-    if(!room || !room.messages) return
+    if (!room || !room.messages) return;
     const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
     updateLastMessage &&
       setSelectedChat({ ...room, messages: updatedMessages });
   };
 
+  const updateSelectedChat = (room, rooms) => {
+    const chat = rooms.find((el) => el.id === room.chat.id);
+    setSelectedChat((prev) => ({ ...prev, chat }));
+  };
+
   const setEditedMessage = async (message, room) => {
     await getAllChats();
-    if(!room || !room.messages) return
+    if (!room || !room.messages) return;
     const updatedMessage = ChatService.setEditedMessage(message, room);
     updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
   };
@@ -74,9 +79,14 @@ export default function ChatsProvider({ children }) {
     return ChatService.getChatMessagesCount(chat);
   };
 
+  const updateChatStatus = (id, status, rooms) => {
+    const updatedChats = ChatService.updateChatStatus(id, rooms, status);
+    setChats(updatedChats);
+  };
+
   function updateLastMessage(message) {
     const updatedChats = ChatService.updateLastMessage(chats, message);
-    setChats(updatedChats);
+    updatedChats && setChats(updatedChats);
   }
 
   function addMessageToRoom(room, message) {
@@ -105,6 +115,9 @@ export default function ChatsProvider({ children }) {
     getChatMessagesCount,
     setEditedMessage,
     addRoom,
+    updateChatStatus,
+    getAllChats,
+    updateSelectedChat,
   };
 
   return (

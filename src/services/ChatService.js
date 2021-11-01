@@ -5,6 +5,20 @@ import { handleError, getToken } from "../utils";
 class ChatService {
   BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
+  chatListEquals(chats, chatsToCheck) {
+    return chats.length === chatsToCheck.length;
+  }
+
+  selectedChatEquals(chat, chatToCheck) {
+    return !(
+      !chat ||
+      !chatToCheck ||
+      !chatToCheck.messages ||
+      chat.chat.id !== chatToCheck.chat.id ||
+      chat.messages.length !== chatToCheck.messages.length
+    );
+  }
+
   getChats(start, howMany) {
     const url = `${this.BASE_URL}/chat-list/${start}/${howMany}`;
     return this._get(url);
@@ -55,8 +69,8 @@ class ChatService {
 
   setEditedMessage(message, room) {
     const updatedMessages = [...room.messages];
-    const index = this._findMessageIndex(message.id, room.messages);
-    if (index < 0) return false;
+    const index = this._findByIndex(message.id, room.messages);
+    if (index < 0) return room.messages;
 
     updatedMessages[index].text = message.text;
     return updatedMessages;
@@ -64,17 +78,25 @@ class ChatService {
 
   deleteMessageFromRoom(id, room) {
     const updatedMessages = [...room.messages];
-    const index = this._findMessageIndex(id, room.messages);
+    const index = this._findByIndex(id, room.messages);
     if (index < 0) return [];
 
     updatedMessages.splice(index, 1);
     return updatedMessages;
   }
 
-  _findMessageIndex(id, messages) {
-    const oldMessage = messages.find((el) => el.id === id);
-    if (!oldMessage) return false;
-    return messages.findIndex((el) => el.id === id);
+  updateChatStatus(id, chats, status) {
+    const updatedChats = [...chats];
+    const index = this._findByIndex(id, chats);
+    if (index < 0) return chats;
+    updatedChats[index].status = status;
+    return updatedChats;
+  }
+
+  _findByIndex(id, arr) {
+    const oldElement = arr.find((el) => el.id === id);
+    if (!oldElement) return -1;
+    return arr.findIndex((el) => el.id === id);
   }
 
   _get(url) {

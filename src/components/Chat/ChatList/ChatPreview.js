@@ -17,8 +17,15 @@ export default function ChatPreview({ chat }) {
     setSelectedChat({ chat });
     hideList();
   };
-  
+
   const fileName = FilesService.formatName(chat.file);
+  const getChatStatus = () => {
+    if (chat.status !== "dispatch") return chat.status;
+    if (chat.online) return "online";
+    if (chat.exitDate) return `last seen ${getTimeAgo(chat.exitDate)}`;
+
+    return "offline";
+  };
 
   return (
     <li
@@ -30,7 +37,9 @@ export default function ChatPreview({ chat }) {
         <div className="chat__header-title">
           <div className="chat__header-name">
             <div className="chat__header-roomname">{chat.name}</div>
-            <div>{chat.online ? "online" : "offline"}</div>
+            <div style={{ color: chat.online ? "#2a8bf2" : "#707c97" }}>
+              {getChatStatus()}
+            </div>
           </div>
           <div className="chat__header-time">
             {chat.message && getTimeAgo(chat.time)}

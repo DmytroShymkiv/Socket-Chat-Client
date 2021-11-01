@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import { useEffect } from "react";
 
 export default function useOutsideClick(ref, onClick) {
   useEffect(() => {
@@ -12,7 +12,7 @@ export default function useOutsideClick(ref, onClick) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-    
+
     // eslint-disable-next-line
   }, [ref]);
 }

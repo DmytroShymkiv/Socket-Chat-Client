@@ -56,5 +56,6 @@ const formatEnding = (value, time) => {
 };
 
 export const sortChats = (chats) => {
+  if (!chats) return [];
   return chats.sort((a, b) => b.time - a.time);
 };
