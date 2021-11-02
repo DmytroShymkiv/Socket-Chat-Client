@@ -6,6 +6,7 @@ const Actions = {
   ServerStartWriting: "server-start-writing",
   ServerStopWriting: "server-stop-writing",
   ServerReadMessage: "server-read-message",
+  ServerJoinRoom: "server-join-room",
 
   ClientError: "client-error",
   ClientMessage: "client-message",

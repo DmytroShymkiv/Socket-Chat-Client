@@ -62,6 +62,7 @@ export default function SocketProvider({ children }) {
     });
 
     socket.current.on(Actions.ClientCreateRoom, (room) => {
+      socket.current.emit(Actions.ServerJoinRoom, room.id);
       addRoom(room);
     });
 

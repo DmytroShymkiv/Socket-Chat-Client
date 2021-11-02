@@ -4,6 +4,7 @@ import { useChats } from "../../../contexts/ChatsContext";
 import { useUI } from "../../../contexts/UIContext";
 import attach from "../../../assets/icons/attach-2.png";
 import more from "../../../assets/icons/more-vertical.png";
+import { getChatStatus } from "../../../utils";
 
 export default function ChatHeader() {
   const { responsive } = useUI();
@@ -19,7 +20,7 @@ export default function ChatHeader() {
         <div className="chatroom__header-info">
           <p className="chatroom__header-name">{chat.name}</p>
           <p style={{ color: chat.online ? "#2a8bf2" : "#707c97" }}>
-            {chat.online ? "online" : "offline"}
+            {getChatStatus(chat)}
           </p>
         </div>
       </div>
