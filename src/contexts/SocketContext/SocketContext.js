@@ -1,13 +1,11 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import io from "socket.io-client";
-import { toastMessage, toastError } from "../../components/Toast/toastActions";
 
 import { getToken } from "../../utils";
 import Actions from "./socketActions";
 import { useChats } from "../ChatsContext";
 import { useAuth } from "../AuthContext";
-import ChatService from "../../services/ChatService";
-import FilesService from "../../services/FilesService";
+import { toastError } from "../../components/Toast/toastActions";
 
 const SocketContext = React.createContext();
 
@@ -23,23 +21,12 @@ export default function SocketProvider({ children }) {
     setEditedMessage,
     deleteMessage,
     addRoom,
-    chats,
-    getAllChats,
     updateSelectedChat,
     updateChatStatus,
+    updateChatUnchecked,
   } = useChats();
-  const [localChats, setLocalChats] = useState(chats);
-  const [localSelectedChat, setLocalSelectedChat] = useState(selectedChat);
+
   const { currentUser } = useAuth();
-
-  useEffect(() => {
-    !ChatService.chatListEquals(chats, localChats) && setLocalChats(chats);
-  }, [chats]);
-
-  useEffect(() => {
-    !ChatService.selectedChatEquals(selectedChat, localSelectedChat) &&
-      setLocalSelectedChat(selectedChat);
-  }, [selectedChat]);
 
   useEffect(() => {
     const SERVER_URL = "http://localhost:3001";
@@ -54,34 +41,24 @@ export default function SocketProvider({ children }) {
       console.log(res);
     });
 
-    socket.current.on(Actions.ClientJoin, async (res) => {
-      if (currentUser.email !== res.email && res.email) {
-        const rooms = await getAllChats();
-        localSelectedChat && updateSelectedChat(localSelectedChat, rooms);
-      }
+    socket.current.on(Actions.ClientJoin, (res) => {
+      if (res.email && currentUser.email !== res.email) updateSelectedChat();
     });
 
-    socket.current.on(Actions.ClientLeave, async (res) => {
-      if (currentUser.email !== res.email && res.email) {
-        const rooms = await getAllChats();
-        localSelectedChat && updateSelectedChat(localSelectedChat, rooms);
-      }
+    socket.current.on(Actions.ClientLeave, (res) => {
+      if (res.email && currentUser.email !== res.email) updateSelectedChat();
     });
 
     socket.current.on(Actions.ClientMessage, (message) => {
-      const chatName = ChatService.getChatNameById(message.room, chats);
-      const file = FilesService.formatName(message.file && message.file.name);
-      const text = message.text + " " + file;
-      toastMessage(chatName, text, currentUser.email !== message.email);
-      addMessage(selectedChat, message);
+      addMessage(message);
     });
 
     socket.current.on(Actions.ClientUpdate, (message) => {
-      setEditedMessage(message, selectedChat);
+      setEditedMessage(message);
     });
 
     socket.current.on(Actions.ClientDeleteMessage, (id) => {
-      deleteMessage(id, selectedChat);
+      deleteMessage(id);
     });
 
     socket.current.on(Actions.ClientCreateRoom, (room) => {
@@ -89,12 +66,15 @@ export default function SocketProvider({ children }) {
     });
 
     socket.current.on(Actions.ClientStartWriting, (res) => {
-      if (res.user !== currentUser.id)
-        updateChatStatus(res.room, "writing...", localChats);
+      if (res.user !== currentUser.id) updateChatStatus(res.room, "writing...");
     });
 
     socket.current.on(Actions.ClientStopWriting, (res) => {
-      updateChatStatus(res.room, "dispatch", localChats);
+      if (res.user !== currentUser.id) updateChatStatus(res.room, "dispatch");
+    });
+
+    socket.current.on(Actions.ClientReadMessage, (res) => {
+      if (res.user === currentUser.id) updateChatUnchecked(res.room);
     });
 
     socket.current.on(Actions.ClientError, (err) => {
@@ -106,7 +86,7 @@ export default function SocketProvider({ children }) {
     };
 
     // eslint-disable-next-line
-  }, [localSelectedChat, localChats]);
+  }, []);
 
   const sendMessage = (message, file) => {
     socket.current.emit(Actions.ServerSendMessage, {
@@ -149,6 +129,12 @@ export default function SocketProvider({ children }) {
     });
   };
 
+  const readMessages = (roomId) => {
+    socket.current.emit(Actions.ServerReadMessage, {
+      id: roomId,
+    });
+  };
+
   const value = {
     sendMessage,
     updateMessage,
@@ -156,6 +142,7 @@ export default function SocketProvider({ children }) {
     createRoom,
     startWriting,
     stopWriting,
+    readMessages,
   };
 
   return (

@@ -40,17 +40,6 @@ class ChatService {
     return chat && chat.name;
   };
 
-  updateLastMessage(chats, message) {
-    const updatedChats = [...chats];
-    const chatIndex = updatedChats.findIndex((el) => el.id === message.room);
-    const fileName = message.file ? message.file.name : "";
-    updatedChats[chatIndex].message = message.text;
-    updatedChats[chatIndex].time = message.date;
-    if (fileName) updatedChats[chatIndex].file = fileName;
-    else updatedChats[chatIndex].file = null;
-    return updatedChats;
-  }
-
   addMessageToRoom(room, message, email) {
     const updatedMessages = [...room.messages];
     const isMyMessage = email === message.email;
@@ -90,6 +79,14 @@ class ChatService {
     const index = this._findByIndex(id, chats);
     if (index < 0) return chats;
     updatedChats[index].status = status;
+    return updatedChats;
+  }
+
+  updateChatUnchecked(id, chats) {
+    const updatedChats = [...chats];
+    const index = this._findByIndex(id, chats);
+    if (index < 0) return chats;
+    updatedChats[index].noChecked = 0;
     return updatedChats;
   }
 

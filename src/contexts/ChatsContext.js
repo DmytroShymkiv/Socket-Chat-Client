@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { useAuth } from "./AuthContext";
 import ChatService from "../services/ChatService";
 import { sortChats } from "../utils";
+import { toastMessage } from "../components/Toast/toastActions";
 
 const ChatsContext = React.createContext();
 
@@ -29,7 +30,7 @@ export default function ChatsProvider({ children }) {
   };
 
   const addRoom = (room) => {
-    setChats([...chats, room]);
+    setChats((prev) => [...prev, room]);
   };
 
   const getChatRoom = async (chat, start, howMany) => {
@@ -45,9 +46,9 @@ export default function ChatsProvider({ children }) {
     return messages;
   };
 
-  const addMessage = (room, message) => {
-    updateLastMessage(message);
-    room && room.messages && addMessageToRoom(room, message);
+  const addMessage = (message) => {
+    showNotification(message);
+    addMessageToRoom(message);
     const anchor = document.getElementById("messagesEnd");
     anchor &&
       anchor.scrollIntoView({
@@ -55,49 +56,67 @@ export default function ChatsProvider({ children }) {
       });
   };
 
-  const deleteMessage = async (id, room) => {
+  const deleteMessage = async (id) => {
     await getAllChats();
-    if (!room || !room.messages) return;
-    const updatedMessages = ChatService.deleteMessageFromRoom(id, room);
-    updateLastMessage &&
-      setSelectedChat({ ...room, messages: updatedMessages });
+    setSelectedChat((prev) => {
+      if (!prev) return;
+      const updatedMessages = ChatService.deleteMessageFromRoom(id, prev);
+      if (updatedMessages) return { ...prev, messages: updatedMessages };
+    });
   };
 
-  const updateSelectedChat = (room, rooms) => {
-    const chat = rooms.find((el) => el.id === room.chat.id);
-    setSelectedChat((prev) => ({ ...prev, chat }));
+  const updateSelectedChat = async () => {
+    const rooms = await getAllChats();
+    setSelectedChat((prev) => {
+      if (!prev) return;
+      const chat = rooms.find((el) => el.id === prev.chat.id);
+      return { ...prev, chat };
+    });
   };
 
-  const setEditedMessage = async (message, room) => {
+  const setEditedMessage = async (message) => {
     await getAllChats();
-    if (!room || !room.messages) return;
-    const updatedMessage = ChatService.setEditedMessage(message, room);
-    updateLastMessage && setSelectedChat({ ...room, messages: updatedMessage });
+    setSelectedChat((prev) => {
+      if (!prev) return;
+      const updatedMessage = ChatService.setEditedMessage(message, prev);
+      if (updatedMessage) return { ...prev, messages: updatedMessage };
+    });
   };
 
   const getChatMessagesCount = (chat) => {
     return ChatService.getChatMessagesCount(chat);
   };
 
-  const updateChatStatus = (id, status, rooms) => {
-    const updatedChats = ChatService.updateChatStatus(id, rooms, status);
-    setChats(updatedChats);
+  const updateChatStatus = (id, status) => {
+    setChats((prev) => {
+      const updatedChats = ChatService.updateChatStatus(id, prev, status);
+      return updatedChats;
+    });
   };
 
-  function updateLastMessage(message) {
-    const updatedChats = ChatService.updateLastMessage(chats, message);
-    updatedChats && setChats(updatedChats);
+  const updateChatUnchecked = (id) => {
+    setChats((prev) => {
+      const updatedChats = ChatService.updateChatUnchecked(id, prev);
+      return updatedChats;
+    });
+  };
+
+  async function showNotification(message) {
+    const chatsForToast = await getAllChats();
+    chatsForToast && toastMessage(message, chatsForToast, currentUser.email);
   }
 
-  function addMessageToRoom(room, message) {
-    if (room && room.chat.id === message.room) {
-      const updatedMessages = ChatService.addMessageToRoom(
-        room,
-        message,
-        currentUser.email
-      );
-      setSelectedChat({ ...room, messages: updatedMessages });
-    }
+  function addMessageToRoom(message) {
+    setSelectedChat((prev) => {
+      if (prev && prev.chat.id === message.room) {
+        const updatedMessages = ChatService.addMessageToRoom(
+          prev,
+          message,
+          currentUser.email
+        );
+        return { ...prev, messages: updatedMessages };
+      }
+    });
   }
 
   const value = {
@@ -118,6 +137,7 @@ export default function ChatsProvider({ children }) {
     updateChatStatus,
     getAllChats,
     updateSelectedChat,
+    updateChatUnchecked,
   };
 
   return (

@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import { useChats } from "../../../contexts/ChatsContext";
+import { useSocket } from "../../../contexts/SocketContext/SocketContext";
 import Loader from "../../Loader/Loader";
 import MessageFromUser from "../../Message/MessageFromUser";
 import MessageToUser from "../../Message/MessageToUser";
 
 export default function ChatContent() {
-  const { selectedChat, getChatRoom, getChatMessagesCount, setLoading } =
-    useChats();
+  const {
+    selectedChat,
+    getChatRoom,
+    getChatMessagesCount,
+    setLoading,
+    updateChatUnchecked,
+  } = useChats();
+  const { readMessages } = useSocket();
   const messages = selectedChat.messages;
 
   const [start, setStart] = useState(0);
@@ -45,6 +52,11 @@ export default function ChatContent() {
     setLoading(true);
     fetchInitialMessages();
 
+    return () => {
+      readMessages(selectedChat.chat.id);
+      updateChatUnchecked(selectedChat.chat.id);
+    };
+
     // eslint-disable-next-line
   }, [selectedChat.chat.id]);
 
@@ -71,7 +83,7 @@ export default function ChatContent() {
 
   return (
     <div ref={listRef} className="chatroom__content">
-      <span id="messagesEnd"/>
+      <span id="messagesEnd" />
       {messages ? messagesView.reverse() : <Loader />}
     </div>
   );
