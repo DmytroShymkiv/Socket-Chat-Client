@@ -1,25 +1,55 @@
-import React, { useContext, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 
 import { useAuth } from "./AuthContext";
 import ChatService from "../services/ChatService";
 import { sortChats } from "../utils";
 import { toastMessage } from "../components/Toast/toastActions";
+import {
+  IChat,
+  IMessage,  
+  ISelectedChat,
+  statusType,
+} from "../types/chat.types";
+import { IMessageResponse } from "../types/socket.types";
 
-const ChatsContext = React.createContext();
+interface IContextValue {
+  chats: IChat[];
+  selectedChat: ISelectedChat | undefined;
+  setSelectedChat: React.Dispatch<
+    React.SetStateAction<ISelectedChat | undefined>
+  >;
+  loading: boolean;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  getChats: (start: number, howMany: number) => Promise<IChat[]>;
+  getChatRoom: (
+    chat: IChat,
+    start: number,
+    howMany: number
+  ) => Promise<IMessage[]>;
+  addMessage: (message: IMessageResponse) => void;
+  deleteMessage: (id: string) => Promise<void>;
+  getChatMessagesCount: (chat: IChat) => Promise<number>;
+  setEditedMessage: (message: IMessage) => Promise<void>;
+  addRoom: (room: IChat) => void;
+  updateChatStatus: (id: string, status: statusType) => void;
+  getAllChats: () => Promise<IChat[]>;
+  updateSelectedChat: () => Promise<void>;
+  updateChatUnchecked: (id: string) => void;
+}
 
-export function useChats() {
+const ChatsContext = React.createContext<IContextValue>(null!);
+
+export function useChats(): IContextValue {
   return useContext(ChatsContext);
 }
 
-export default function ChatsProvider({ children }) {
+const ChatsProvider: FC = ({ children }) => {
   const { currentUser } = useAuth();
-  const [chats, setChats] = useState([]);
-  const [selectedChat, setSelectedChat] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [chats, setChats] = useState<IChat[]>([]);
+  const [selectedChat, setSelectedChat] = useState<ISelectedChat | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const [start, setStart] = useState(0);
-
-  const getChats = async (start, howMany) => {
+  const getChats = async (start: number, howMany: number) => {
     const chats = await ChatService.getChats(start, howMany);
     setChats(chats);
     return chats;
@@ -29,11 +59,11 @@ export default function ChatsProvider({ children }) {
     return getChats(0, 0);
   };
 
-  const addRoom = (room) => {
+  const addRoom = (room: IChat) => {
     setChats((prev) => [...prev, room]);
   };
 
-  const getChatRoom = async (chat, start, howMany) => {
+  const getChatRoom = async (chat: IChat, start: number, howMany: number) => {
     const messages = await ChatService.getMessages(chat, start, howMany);
     setSelectedChat((prev) => ({
       chat,
@@ -46,7 +76,7 @@ export default function ChatsProvider({ children }) {
     return messages;
   };
 
-  const addMessage = (message) => {
+  const addMessage = (message: IMessageResponse) => {
     showNotification(message);
     addMessageToRoom(message);
     const anchor = document.getElementById("messagesEnd");
@@ -56,7 +86,7 @@ export default function ChatsProvider({ children }) {
       });
   };
 
-  const deleteMessage = async (id) => {
+  const deleteMessage = async (id: string) => {
     await getAllChats();
     setSelectedChat((prev) => {
       if (!prev) return;
@@ -70,11 +100,12 @@ export default function ChatsProvider({ children }) {
     setSelectedChat((prev) => {
       if (!prev) return;
       const chat = rooms.find((el) => el.id === prev.chat.id);
+      if (!chat) return;
       return { ...prev, chat };
     });
   };
 
-  const setEditedMessage = async (message) => {
+  const setEditedMessage = async (message: IMessage) => {
     await getAllChats();
     setSelectedChat((prev) => {
       if (!prev) return;
@@ -83,50 +114,42 @@ export default function ChatsProvider({ children }) {
     });
   };
 
-  const getChatMessagesCount = (chat) => {
+  const getChatMessagesCount = (chat: IChat) => {
     return ChatService.getChatMessagesCount(chat);
   };
 
-  const updateChatStatus = (id, status) => {
-    setChats((prev) => {
-      const updatedChats = ChatService.updateChatStatus(id, prev, status);
-      return updatedChats;
-    });
+  const updateChatStatus = (id: string, status: statusType) => {
+    setChats((prev) => ChatService.updateChatStatus(id, prev, status));
   };
 
-  const updateChatUnchecked = (id) => {
-    setChats((prev) => {
-      const updatedChats = ChatService.updateChatUnchecked(id, prev);
-      return updatedChats;
-    });
+  const updateChatUnchecked = (id: string) => {
+    setChats((prev) => ChatService.updateChatUnchecked(id, prev));
   };
 
-  async function showNotification(message) {
+  async function showNotification(message: IMessageResponse) {
     const chatsForToast = await getAllChats();
-    chatsForToast && toastMessage(message, chatsForToast, currentUser.email);
+    chatsForToast && toastMessage(message, chatsForToast, currentUser?.email);
   }
 
-  function addMessageToRoom(message) {
+  function addMessageToRoom(message: IMessageResponse) {
     setSelectedChat((prev) => {
       if (prev && prev.chat.id === message.room) {
         const updatedMessages = ChatService.addMessageToRoom(
           prev,
           message,
-          currentUser.email
+          currentUser?.email
         );
         return { ...prev, messages: updatedMessages };
       }
     });
   }
 
-  const value = {
+  const value: IContextValue = {
     chats: sortChats(chats),
     selectedChat,
     setSelectedChat,
     loading,
     setLoading,
-    start,
-    setStart,
     getChats,
     getChatRoom,
     addMessage,
@@ -143,4 +166,6 @@ export default function ChatsProvider({ children }) {
   return (
     <ChatsContext.Provider value={value}>{children}</ChatsContext.Provider>
   );
-}
+};
+
+export default ChatsProvider;

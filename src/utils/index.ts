@@ -1,4 +1,4 @@
-import IChat from "../types/chat.interface";
+import { IChat, Status } from "../types/chat.types";
 
 export const setToken = (token: string): void => {
   localStorage.setItem("token", token);
@@ -57,13 +57,13 @@ const formatEnding = (value: number, time: string): string => {
   return time;
 };
 
-export const sortChats = (chats: IChat[]) => {
+export const sortChats = (chats: IChat[]): IChat[] => {
   if (!chats) return [];
   return chats.sort((a, b) => b.time - a.time);
 };
 
 export const getChatStatus = (chat: IChat): string => {
-  if (chat.status !== "dispatch") return chat.status;
+  if (chat.status !== Status.dispatch) return chat.status;
   if (chat.online) return "online";
   if (chat.exitDate) return `last seen ${getTimeAgo(chat.exitDate)}`;
 

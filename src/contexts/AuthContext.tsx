@@ -1,7 +1,7 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState, useEffect, FC } from "react";
 
 import AuthService from "../services/AuthService";
-import { ILoginBody, IUser, IUserBody } from "../types/user.interface";
+import { ILoginBody, IUser, IUserBody } from "../types/user.types";
 
 interface IContextValue {
   currentUser: IUser | null;
@@ -18,10 +18,7 @@ export function useAuth(): IContextValue {
   return useContext(AuthContext);
 }
 
-interface props {
-  children: React.ReactNode;
-}
-export default function AuthProvider({ children }: props) {
+const AuthProvider: FC = ({ children }) => {
   const [currentUser, setCurrentUser] = useState<IUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -60,7 +57,7 @@ export default function AuthProvider({ children }: props) {
     AuthService.logout();
   };
 
-  const value = {
+  const value: IContextValue = {
     currentUser,
     checkEmail,
     loginAuthorization,
@@ -74,4 +71,6 @@ export default function AuthProvider({ children }: props) {
       {!loading && children}
     </AuthContext.Provider>
   );
-}
+};
+
+export default AuthProvider;

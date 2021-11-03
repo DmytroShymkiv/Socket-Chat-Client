@@ -1,30 +1,27 @@
 import axios from "axios";
+import {
+  IChat,
+  ISelectedChat,
+  IMessage,
+  statusType,
+} from "../types/chat.types";
+import { IMessageResponse } from "../types/socket.types";
 
 import { handleError, getToken } from "../utils";
 
 class ChatService {
   BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
-  chatListEquals(chats, chatsToCheck) {
-    return chats.length === chatsToCheck.length;
-  }
-
-  selectedChatEquals(chat, chatToCheck) {
-    return !(
-      !chat ||
-      !chatToCheck ||
-      !chatToCheck.messages ||
-      chat.chat.id !== chatToCheck.chat.id ||
-      chat.messages.length !== chatToCheck.messages.length
-    );
-  }
-
-  getChats(start, howMany) {
+  public getChats(start: number, howMany: number): Promise<IChat[]> {
     const url = `${this.BASE_URL}/chat-list/${start}/${howMany}`;
-    return this._get(url);
+    return this.get(url);
   }
 
-  getMessages(chat, start, howMany) {
+  public getMessages(
+    chat: IChat,
+    start: number,
+    howMany: number
+  ): Promise<IMessage[]> {
     if (start < 0) {
       const tmp = howMany + start;
       start = 0;
@@ -32,15 +29,19 @@ class ChatService {
     }
 
     const url = `${this.BASE_URL}/chat-room/${chat.id}/${start}/${howMany}`;
-    return this._get(url);
+    return this.get(url);
   }
 
-  getChatNameById = (id, chats) => {
+  public getChatNameById = (id: string, chats: IChat[]) => {
     const chat = chats.find((chat) => chat.id === id);
     return chat && chat.name;
   };
 
-  addMessageToRoom(room, message, email) {
+  public addMessageToRoom(
+    room: ISelectedChat,
+    message: IMessageResponse,
+    email?: string
+  ) {
     const updatedMessages = [...room.messages];
     const isMyMessage = email === message.email;
     updatedMessages.push({
@@ -51,52 +52,56 @@ class ChatService {
     return updatedMessages;
   }
 
-  getChatMessagesCount(chat) {
+  public getChatMessagesCount(chat: IChat): Promise<number> {
     const url = `${this.BASE_URL}/chat-room/messages-count/${chat.id}`;
-    return this._get(url);
+    return this.get(url);
   }
 
-  setEditedMessage(message, room) {
+  public setEditedMessage(message: IMessage, room: ISelectedChat): IMessage[] {
     const updatedMessages = [...room.messages];
-    const index = this._findByIndex(message.id, room.messages);
+    const index = this.findByIndex(message.id, room.messages);
     if (index < 0) return room.messages;
 
     updatedMessages[index].text = message.text;
     return updatedMessages;
   }
 
-  deleteMessageFromRoom(id, room) {
+  public deleteMessageFromRoom(id: string, room: ISelectedChat): IMessage[] {
     const updatedMessages = [...room.messages];
-    const index = this._findByIndex(id, room.messages);
+    const index = this.findByIndex(id, room.messages);
     if (index < 0) return [];
 
     updatedMessages.splice(index, 1);
     return updatedMessages;
   }
 
-  updateChatStatus(id, chats, status) {
+  public updateChatStatus(
+    id: string,
+    chats: IChat[],
+    status: statusType
+  ): IChat[] {
     const updatedChats = [...chats];
-    const index = this._findByIndex(id, chats);
+    const index = this.findByIndex(id, chats);
     if (index < 0) return chats;
     updatedChats[index].status = status;
     return updatedChats;
   }
 
-  updateChatUnchecked(id, chats) {
+  public updateChatUnchecked(id: string, chats: IChat[]): IChat[] {
     const updatedChats = [...chats];
-    const index = this._findByIndex(id, chats);
+    const index = this.findByIndex(id, chats);
     if (index < 0) return chats;
     updatedChats[index].noChecked = 0;
     return updatedChats;
   }
 
-  _findByIndex(id, arr) {
-    const oldElement = arr.find((el) => el.id === id);
+  private findByIndex(id: string, arr: any[]): number {
+    const oldElement: IChat | IMessage = arr.find((el) => el.id === id);
     if (!oldElement) return -1;
     return arr.findIndex((el) => el.id === id);
   }
 
-  _get(url) {
+  private get(url: string) {
     return handleError(async () => {
       const response = await axios.get(url, {
         headers: {

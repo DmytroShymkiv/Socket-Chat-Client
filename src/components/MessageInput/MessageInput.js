@@ -15,7 +15,7 @@ export default function MessageInput({ sendMessage }) {
   const { messages } = useUI();
   const { startWriting, stopWriting } = useSocket();
   const { message, editMessage } = messages;
-  const [text, setText] = useState(message.text || "");
+  const [text, setText] = useState(message?.text || "");
   const [file, setFile] = useState(null);
   
   const cancelWriting = () => {
@@ -25,7 +25,7 @@ export default function MessageInput({ sendMessage }) {
   useOutsideClick(formRef, cancelWriting);
 
   const handleSend = () => {
-    message.id ? editMessage(text) : sendMessage(text, file);
+    message ? editMessage(text) : sendMessage(text, file);
     setText("");
     setFile(null);
     cancelWriting();
@@ -55,7 +55,7 @@ export default function MessageInput({ sendMessage }) {
   }, [file]);
 
   useEffect(() => {
-    message.text && setText(message.text);
+    message?.text && setText(message.text);
   }, [message]);
 
   return (

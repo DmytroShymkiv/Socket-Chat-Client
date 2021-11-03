@@ -1,7 +1,7 @@
 class FileService {
   BASE_URL = "http://localhost:3000/files/";
 
-  downloadFile(fileName) {
+  downloadFile(fileName: string) {
     const url = this.BASE_URL + fileName;
     fetch(url).then((response) => {
       response.blob().then((blob) => {
@@ -14,7 +14,7 @@ class FileService {
     });
   }
 
-  formatName(name) {
+  formatName(name: string): string {
     return name ? name.split("$").slice(1).join("") : "";
   }
 }

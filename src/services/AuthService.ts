@@ -1,5 +1,5 @@
 import axios from "axios";
-import { IUser, IUserBody, ILoginBody } from "../types/user.interface";
+import { IUser, IUserBody, ILoginBody } from "../types/user.types";
 
 import { handleError, setToken, getToken, removeToken } from "../utils";
 
