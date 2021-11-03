@@ -32,7 +32,7 @@ interface IMessage {
 
 type messageType = IMessage | null;
 
-const UIContext = React.createContext<IContextValue>(null!);
+const UIContext = React.createContext<IContextValue>({} as IContextValue);
 
 export function useUI(): IContextValue {
   return useContext(UIContext);

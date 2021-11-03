@@ -1,18 +1,22 @@
 import React, { useContext, useState, useEffect, FC } from "react";
 
 import AuthService from "../services/AuthService";
+import { IError } from "../types/error.type";
 import { ILoginBody, IUser, IUserBody } from "../types/user.types";
 
 interface IContextValue {
   currentUser: IUser | null;
-  checkEmail: (email: string) => Promise<any>;
-  loginAuthorization: ({ email, password }: ILoginBody) => Promise<any>;
-  createUser: (user: IUserBody) => Promise<any>;
-  loginUser: (secretKey: string) => Promise<any>;
+  checkEmail: (email: string) => Promise<boolean | IError>;
+  loginAuthorization: ({
+    email,
+    password,
+  }: ILoginBody) => Promise<boolean | IError>;
+  createUser: (user: IUserBody) => Promise<boolean | IError>;
+  loginUser: (secretKey: string) => Promise<boolean | IError>;
   logout: () => void;
 }
 
-const AuthContext = React.createContext<IContextValue>(null!);
+const AuthContext = React.createContext<IContextValue>({} as IContextValue);
 
 export function useAuth(): IContextValue {
   return useContext(AuthContext);
@@ -34,13 +38,15 @@ const AuthProvider: FC = ({ children }) => {
 
   const createUser = async (user: IUserBody) => {
     const response = await AuthService.createUser(user);
-    !response.errors && (await loadUser());
+    const { errors } = response as IError;
+    !errors && (await loadUser());
     return response;
   };
 
   const loginUser = async (secretKey: string) => {
     const response = await AuthService.loginUser(secretKey);
-    !response.errors && (await loadUser());
+    const { errors } = response as IError;
+    !errors && (await loadUser());
     return response;
   };
 

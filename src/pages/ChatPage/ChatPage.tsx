@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 
 import Chat from "../../components/Chat/ChatContent/Chat";
 import ChatList from "../../components/Chat/ChatList/ChatList";
@@ -7,17 +7,19 @@ import Toast from "../../components/Toast/ToastContainer";
 import TopMenu from "../../components/TopMenu/TopMenu";
 import { useChats } from "../../contexts/ChatsContext";
 import { useUI } from "../../contexts/UIContext";
+import { IError } from "../../types/error.type";
 
-export default function ChatPage() {
-  const { getChats } = useChats();
+const ChatPage: FC = () => {
+  const { getAllChats } = useChats();
   const { responsive } = useUI();
   const { isListHidden, isChatHidden } = responsive;
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
 
   const fetchChats = async () => {
-    const response = await getChats(0, 0);
-    response.errors && setError(response.errors);
+    const response = await getAllChats();
+    const { errors } = response as IError;
+    errors && setError(errors);
     setLoading(false);
   };
   useEffect(() => {
@@ -52,4 +54,6 @@ export default function ChatPage() {
       </div>
     </div>
   );
-}
+};
+
+export default ChatPage;

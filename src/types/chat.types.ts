@@ -7,7 +7,7 @@ export interface IChat {
   online: boolean;
   noChecked: number;
   message: string;
-  file: string | undefined;
+  file?: string;
   name: string;
   exitDate: number | false;
 }

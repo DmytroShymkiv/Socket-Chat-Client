@@ -1,18 +1,18 @@
 import axios from "axios";
+
 import {
   IChat,
   ISelectedChat,
   IMessage,
   statusType,
 } from "../types/chat.types";
+import { IError } from "../types/error.type";
 import { IMessageResponse } from "../types/socket.types";
-
 import { handleError, getToken } from "../utils";
-
 class ChatService {
   BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3000";
 
-  public getChats(start: number, howMany: number): Promise<IChat[]> {
+  public getChats(start: number, howMany: number): Promise<IChat[] | IError> {
     const url = `${this.BASE_URL}/chat-list/${start}/${howMany}`;
     return this.get(url);
   }
@@ -21,7 +21,7 @@ class ChatService {
     chat: IChat,
     start: number,
     howMany: number
-  ): Promise<IMessage[]> {
+  ): Promise<IMessage[] | IError> {
     if (start < 0) {
       const tmp = howMany + start;
       start = 0;
@@ -52,7 +52,7 @@ class ChatService {
     return updatedMessages;
   }
 
-  public getChatMessagesCount(chat: IChat): Promise<number> {
+  public getChatMessagesCount(chat: IChat): Promise<number | IError> {
     const url = `${this.BASE_URL}/chat-room/messages-count/${chat.id}`;
     return this.get(url);
   }

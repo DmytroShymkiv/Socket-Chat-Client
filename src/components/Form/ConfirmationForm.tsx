@@ -1,12 +1,17 @@
-import React, { useState } from "react";
+import { ChangeEvent, FC, FormEvent, useState } from "react";
 
 import Alert from "../Alert/Alert";
 
-export default function ConfirmationForm({ setSecret, error }) {
-  const array = new Array(6).fill("");
-  const [keys, setKeys] = useState(array);
+interface IConfirmationProps {
+  setSecret: (secretKey: string) => Promise<void>;
+  error: string;
+}
 
-  const handleChange = (e) => {
+const ConfirmationForm: FC<IConfirmationProps> = ({ setSecret, error }) => {
+  const array = new Array(6).fill("");
+  const [keys, setKeys] = useState<string[]>(array);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { value, name } = e.target;
     if ((value.length !== 1 || Number.isNaN(Number(value))) && value !== "")
@@ -19,7 +24,7 @@ export default function ConfirmationForm({ setSecret, error }) {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     await setSecret(keys.join(""));
   };
@@ -33,7 +38,7 @@ export default function ConfirmationForm({ setSecret, error }) {
           <input
             className="authentication-form__input"
             key={index}
-            name={index}
+            name={index.toString()}
             value={keys[index]}
             onChange={handleChange}
             placeholder="0"
@@ -43,4 +48,6 @@ export default function ConfirmationForm({ setSecret, error }) {
       </form>
     </>
   );
-}
+};
+
+export default ConfirmationForm;

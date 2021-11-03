@@ -6,38 +6,39 @@ import { sortChats } from "../utils";
 import { toastMessage } from "../components/Toast/toastActions";
 import {
   IChat,
-  IMessage,  
+  IMessage,
   ISelectedChat,
   statusType,
 } from "../types/chat.types";
 import { IMessageResponse } from "../types/socket.types";
+import { IError } from "../types/error.type";
 
 interface IContextValue {
   chats: IChat[];
-  selectedChat: ISelectedChat | undefined;
+  selectedChat?: ISelectedChat;
   setSelectedChat: React.Dispatch<
     React.SetStateAction<ISelectedChat | undefined>
   >;
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  getChats: (start: number, howMany: number) => Promise<IChat[]>;
+  getChats: (start: number, howMany: number) => Promise<IChat[] | IError>;
   getChatRoom: (
     chat: IChat,
     start: number,
     howMany: number
-  ) => Promise<IMessage[]>;
+  ) => Promise<IError | IMessage[]>;
   addMessage: (message: IMessageResponse) => void;
   deleteMessage: (id: string) => Promise<void>;
-  getChatMessagesCount: (chat: IChat) => Promise<number>;
+  getChatMessagesCount: (chat: IChat) => Promise<number | IError>;
   setEditedMessage: (message: IMessage) => Promise<void>;
   addRoom: (room: IChat) => void;
   updateChatStatus: (id: string, status: statusType) => void;
-  getAllChats: () => Promise<IChat[]>;
+  getAllChats: () => Promise<IChat[] | IError>;
   updateSelectedChat: () => Promise<void>;
   updateChatUnchecked: (id: string) => void;
 }
 
-const ChatsContext = React.createContext<IContextValue>(null!);
+const ChatsContext = React.createContext<IContextValue>({} as IContextValue);
 
 export function useChats(): IContextValue {
   return useContext(ChatsContext);
@@ -51,7 +52,8 @@ const ChatsProvider: FC = ({ children }) => {
 
   const getChats = async (start: number, howMany: number) => {
     const chats = await ChatService.getChats(start, howMany);
-    setChats(chats);
+    const { errors } = chats as IError;
+    !errors && setChats(chats as IChat[]);
     return chats;
   };
 
@@ -64,14 +66,18 @@ const ChatsProvider: FC = ({ children }) => {
   };
 
   const getChatRoom = async (chat: IChat, start: number, howMany: number) => {
-    const messages = await ChatService.getMessages(chat, start, howMany);
-    setSelectedChat((prev) => ({
-      chat,
-      messages:
-        prev && prev.messages && prev.chat.id === chat.id
-          ? [...messages, ...prev.messages]
-          : messages,
-    }));
+    let messages = await ChatService.getMessages(chat, start, howMany);
+    const { errors } = messages as IError;
+    if (!errors) {
+      messages = messages as IMessage[];
+      setSelectedChat((prev) => ({
+        chat,
+        messages:
+          prev && prev.messages && prev.chat.id === chat.id
+            ? [...(messages as IMessage[]), ...prev.messages]
+            : (messages as IMessage[]),
+      }));
+    }
     setLoading(false);
     return messages;
   };
@@ -97,12 +103,14 @@ const ChatsProvider: FC = ({ children }) => {
 
   const updateSelectedChat = async () => {
     const rooms = await getAllChats();
-    setSelectedChat((prev) => {
-      if (!prev) return;
-      const chat = rooms.find((el) => el.id === prev.chat.id);
-      if (!chat) return;
-      return { ...prev, chat };
-    });
+    const { errors } = rooms as IError;
+    !errors &&
+      setSelectedChat((prev) => {
+        if (!prev) return;
+        const chat = (rooms as IChat[]).find((el) => el.id === prev.chat.id);
+        if (!chat) return;
+        return { ...prev, chat };
+      });
   };
 
   const setEditedMessage = async (message: IMessage) => {

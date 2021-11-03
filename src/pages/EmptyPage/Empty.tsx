@@ -1,7 +1,8 @@
-import React from "react";
+import { FC } from "react";
+
 import TopMenu from "../../components/TopMenu/TopMenu";
 
-export default function Empty() {
+const Empty: FC = () => {
   return (
     <div style={{ display: "flex" }}>
       <div style={{ maxWidth: "20vw" }}>
@@ -9,4 +10,6 @@ export default function Empty() {
       </div>
     </div>
   );
-}
+};
+
+export default Empty;

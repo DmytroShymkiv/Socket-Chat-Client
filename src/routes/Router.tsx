@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 
 import publicRoutes from "./publicRoutes";
@@ -6,7 +6,7 @@ import privateRoutes from "./privateRoutes";
 import ROUTES from "./routes";
 import { useAuth } from "../contexts/AuthContext";
 
-export default function Router() {
+const Router: FC = () => {
   const { currentUser } = useAuth();
   return (
     <BrowserRouter>
@@ -30,4 +30,6 @@ export default function Router() {
       </Switch>
     </BrowserRouter>
   );
-}
+};
+
+export default Router;

@@ -18,17 +18,13 @@ interface IContextValue {
   sendMessage: (message: string, file: IFile) => void;
   updateMessage: (id: string, text: string) => void;
   deleteMessageEmit: (id: string) => void;
-  createRoom: (
-    users: string[],
-    photo?: IFile | undefined,
-    name?: string | undefined
-  ) => void;
+  createRoom: (users: string[], photo?: IFile, name?: string) => void;
   startWriting: (room: string) => void;
   stopWriting: (room: string) => void;
   readMessages: (roomId: string) => void;
 }
 
-const SocketContext = React.createContext<IContextValue>(null!);
+const SocketContext = React.createContext<IContextValue>({} as IContextValue);
 
 export function useSocket(): IContextValue {
   return useContext(SocketContext);

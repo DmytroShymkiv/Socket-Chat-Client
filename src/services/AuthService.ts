@@ -1,10 +1,11 @@
 import axios from "axios";
+import { IError } from "../types/error.type";
 import { IUser, IUserBody, ILoginBody } from "../types/user.types";
 
 import { handleError, setToken, getToken, removeToken } from "../utils";
 
 type sendSecretType = { email: string } | ILoginBody;
-type postUserType = string | IUserBody;
+type postUserType = { secretKey: string } | IUserBody;
 
 class AuthService {
   BASE_URL = "http://localhost:3000";
@@ -24,14 +25,14 @@ class AuthService {
     return response;
   }
 
-  public createUser(user: IUserBody) {
+  public createUser(user: IUserBody): Promise<boolean | IError> {
     const url = `${this.BASE_URL}/register/secret`;
     return this.postUser(url, user);
   }
 
-  public loginUser(secretKey: string) {
+  public loginUser(secretKey: string): Promise<boolean | IError> {
     const url = `${this.BASE_URL}/login/secret`;
-    return this.postUser(url, secretKey);
+    return this.postUser(url, { secretKey });
   }
 
   private postUser(url: string, body: postUserType) {
@@ -46,12 +47,15 @@ class AuthService {
     });
   }
 
-  public checkEmail(email: string) {
+  public checkEmail(email: string): Promise<boolean | IError> {
     const url = `${this.BASE_URL}/register`;
     return this.sendSecret(url, { email });
   }
 
-  public loginAuthorization({ email, password }: ILoginBody) {
+  public loginAuthorization({
+    email,
+    password,
+  }: ILoginBody): Promise<boolean | IError> {
     const url = `${this.BASE_URL}/login`;
     return this.sendSecret(url, { email, password });
   }
