@@ -136,7 +136,10 @@ const ChatsProvider: FC = ({ children }) => {
 
   async function showNotification(message: IMessageResponse) {
     const chatsForToast = await getAllChats();
-    chatsForToast && toastMessage(message, chatsForToast, currentUser?.email);
+    const { errors } = chatsForToast as IError;
+    if (errors) return;
+    chatsForToast &&
+      toastMessage(message, chatsForToast as IChat[], currentUser?.email);
   }
 
   function addMessageToRoom(message: IMessageResponse) {
@@ -148,7 +151,7 @@ const ChatsProvider: FC = ({ children }) => {
           currentUser?.email
         );
         return { ...prev, messages: updatedMessages };
-      }
+      } else return prev;
     });
   }
 

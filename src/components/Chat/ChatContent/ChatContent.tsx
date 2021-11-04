@@ -1,12 +1,13 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, FC } from "react";
 
 import { useChats } from "../../../contexts/ChatsContext";
 import { useSocket } from "../../../contexts/SocketContext/SocketContext";
+import { IError } from "../../../types/error.type";
 import Loader from "../../Loader/Loader";
 import MessageFromUser from "../../Message/MessageFromUser";
 import MessageToUser from "../../Message/MessageToUser";
 
-export default function ChatContent() {
+const ChatContent: FC = () => {
   const {
     selectedChat,
     getChatRoom,
@@ -15,27 +16,34 @@ export default function ChatContent() {
     updateChatUnchecked,
   } = useChats();
   const { readMessages } = useSocket();
-  const messages = selectedChat.messages;
+  const messages = selectedChat && selectedChat.messages;
 
-  const [start, setStart] = useState(0);
+  const [start, setStart] = useState<number>(0);
   const howMany = 10;
-  const [count, setCount] = useState(0);
-  const [fetching, setFetching] = useState(false);
-  const listRef = useRef(null);
+  const [count, setCount] = useState<number>(0);
+  const [fetching, setFetching] = useState<boolean>(false);
+  const listRef = useRef<HTMLDivElement>(null);
 
-  const handleScroll = (e) => {
-    const { scrollTop, scrollHeight } = e.target;
-    const { clientHeight } = listRef.current;
+  const handleScroll = (e: Event) => {
+    const { scrollTop, scrollHeight } = e.target as HTMLDivElement;
+    const { clientHeight } = listRef.current as HTMLDivElement;
     const isOnTop = scrollHeight - clientHeight + scrollTop < 50;
     const isScrolled = clientHeight < scrollHeight;
 
-    if (isOnTop && isScrolled && messages.length < count && start >= 0) {
+    if (
+      isOnTop &&
+      isScrolled &&
+      messages &&
+      messages.length < count &&
+      start >= 0
+    ) {
       setFetching(true);
     }
   };
 
   useEffect(() => {
     const list = listRef.current;
+    if (!list) return;
     list.addEventListener("scroll", handleScroll);
     return () => list.removeEventListener("scroll", handleScroll);
 
@@ -43,7 +51,11 @@ export default function ChatContent() {
   }, [count, start]);
 
   const fetchInitialMessages = async () => {
-    const fetchedCount = await getChatMessagesCount(selectedChat.chat);
+    if (!selectedChat) return;
+    let fetchedCount = await getChatMessagesCount(selectedChat.chat);
+    const { errors } = fetchedCount as IError;
+    if (errors) return;
+    fetchedCount = fetchedCount as number;
     await getChatRoom(selectedChat.chat, fetchedCount - howMany, howMany);
     setStart(fetchedCount - howMany);
     setCount(fetchedCount);
@@ -53,14 +65,16 @@ export default function ChatContent() {
     fetchInitialMessages();
 
     return () => {
+      if (!selectedChat) return;
       readMessages(selectedChat.chat.id);
       updateChatUnchecked(selectedChat.chat.id);
     };
 
     // eslint-disable-next-line
-  }, [selectedChat.chat.id]);
+  }, [selectedChat?.chat.id]);
 
   const fetchNextMessages = async () => {
+    if (!selectedChat) return;
     await getChatRoom(selectedChat.chat, start - howMany, howMany);
     setStart((prev) => prev - howMany);
     setFetching(false);
@@ -87,4 +101,6 @@ export default function ChatContent() {
       {messages ? messagesView.reverse() : <Loader />}
     </div>
   );
-}
+};
+
+export default ChatContent;

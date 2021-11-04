@@ -15,7 +15,7 @@ import {
 import { IFile } from "../../types/file.types";
 
 interface IContextValue {
-  sendMessage: (message: string, file: IFile) => void;
+  sendMessage: (message: string, file?: IFile) => void;
   updateMessage: (id: string, text: string) => void;
   deleteMessageEmit: (id: string) => void;
   createRoom: (users: string[], photo?: IFile, name?: string) => void;
@@ -108,7 +108,7 @@ const SocketProvider: FC = ({ children }) => {
     // eslint-disable-next-line
   }, []);
 
-  const sendMessage = (message: string, file: IFile) => {
+  const sendMessage = (message: string, file?: IFile) => {
     socket.current?.emit(Actions.ServerSendMessage, {
       room: selectedChat?.chat.id,
       message,

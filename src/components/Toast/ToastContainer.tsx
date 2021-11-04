@@ -1,8 +1,8 @@
-import React from "react";
-import {ToastContainer} from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
+import { FC } from "react";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function Toast() {
+const Toast: FC = () => {
   return (
     <ToastContainer
       position="top-right"
@@ -16,4 +16,6 @@ export default function Toast() {
       theme="dark"
     />
   );
-}
+};
+
+export default Toast;

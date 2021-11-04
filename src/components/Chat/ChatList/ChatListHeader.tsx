@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import { useState, FC } from "react";
 
 import more from "../../../assets/icons/chevron-down.png";
 import plus from "../../../assets/icons/plus.png";
 import ChatForm from "../../ChatForm/ChatForm";
 import Modal from "../../Modal/Modal";
 
-export default function ChatListHeader() {  
-  const [isOpen, setIsOpen] = useState(false);
+const ChatListHeader: FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const onClose = () => setIsOpen(false);
   const CreateChatModal = () => (
@@ -40,4 +40,6 @@ export default function ChatListHeader() {
       </div>
     </>
   );
-}
+};
+
+export default ChatListHeader;

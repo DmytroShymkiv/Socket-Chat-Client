@@ -1,13 +1,18 @@
-import React, { useState, useRef } from "react";
+import { useState, useRef, FC, ChangeEvent } from "react";
 
 import plus from "../../assets/icons/plus.png";
 import file from "../../assets/icons/file.png";
 import photo from "../../assets/icons/image.png";
 import film from "../../assets/icons/film.png";
 import useOutsideClick from "../../hooks/useOutsideClick";
+import { IFile } from "../../types/file.types";
 
-export default function AttachButton({ setFile }) {
-  const [showMore, setShowMore] = useState(false);
+interface IAttachButtonProps {
+  setFile: (file: IFile) => void;
+}
+
+const AttachButton: FC<IAttachButtonProps> = ({ setFile }) => {
+  const [showMore, setShowMore] = useState<boolean>(false);
   const attachBtnRef = useRef(null);
 
   useOutsideClick(attachBtnRef, () => setShowMore(false));
@@ -15,6 +20,7 @@ export default function AttachButton({ setFile }) {
   const acceptedFormat = {
     photo: ".jpg, .jpeg, .png, .svg",
     film: ".mp4",
+    file: undefined,
   };
 
   const images = {
@@ -23,13 +29,17 @@ export default function AttachButton({ setFile }) {
     film,
   };
 
-  function Button({ name }) {
+  type imageType = "file" | "photo" | "film";
+
+  const Button: FC<{ name: imageType }> = ({ name }) => {
     const image = images[name];
     const format = acceptedFormat[name];
 
-    const handleChange = (e) => {
-      const file = e.target.files[0];
-      setFile({ originalName: file.name, size: file.size, buffer: file });
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const files = e.target.files;
+      const file = files && files[0];
+      file &&
+        setFile({ originalName: file.name, size: file.size, buffer: file });
     };
 
     return (
@@ -46,7 +56,7 @@ export default function AttachButton({ setFile }) {
         />
       </div>
     );
-  }
+  };
 
   return (
     <div className="attach-button__open" ref={attachBtnRef}>
@@ -66,4 +76,6 @@ export default function AttachButton({ setFile }) {
       )}
     </div>
   );
-}
+};
+
+export default AttachButton;

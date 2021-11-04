@@ -1,7 +1,13 @@
-import React, { useRef } from "react";
+import { FC, useRef } from "react";
 
-export default function Modal({ content, isOpen, onClose }) {
-  const modalBackground = useRef();
+interface IModalProps {
+  content: JSX.Element;
+  isOpen: boolean;
+  onClose: () => void;
+}
+
+const Modal: FC<IModalProps> = ({ content, isOpen, onClose }) => {
+  const modalBackground = useRef(null);
 
   return (
     <>
@@ -16,4 +22,6 @@ export default function Modal({ content, isOpen, onClose }) {
       )}
     </>
   );
-}
+};
+
+export default Modal;

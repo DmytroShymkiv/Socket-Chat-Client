@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 
 import { getTimeAgo } from "../../../utils";
 import { useChats } from "../../../contexts/ChatsContext";
@@ -6,8 +6,9 @@ import { useUI } from "../../../contexts/UIContext";
 import { useSocket } from "../../../contexts/SocketContext/SocketContext";
 import FilesService from "../../../services/FilesService";
 import { getChatStatus } from "../../../utils";
+import { IChat } from "../../../types/chat.types";
 
-export default function ChatPreview({ chat }) {
+const ChatPreview: FC<{ chat: IChat }> = ({ chat }) => {
   const { selectedChat, setSelectedChat, loading } = useChats();
   const { readMessages } = useSocket();
   const { responsive } = useUI();
@@ -22,7 +23,7 @@ export default function ChatPreview({ chat }) {
     hideList();
   };
 
-  const fileName = FilesService.formatName(chat.file);
+  const fileName = chat.file && FilesService.formatName(chat.file);
 
   return (
     <li
@@ -59,4 +60,6 @@ export default function ChatPreview({ chat }) {
       </div>
     </li>
   );
-}
+};
+
+export default ChatPreview;

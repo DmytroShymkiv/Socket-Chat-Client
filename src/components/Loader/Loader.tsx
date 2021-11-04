@@ -1,6 +1,8 @@
+import { FC } from "react";
+
 import "./loader.css";
 
-export default function Loader() {
+const Loader: FC = () => {
   return (
     <div className="lds-ellipsis">
       <div></div>
@@ -9,4 +11,6 @@ export default function Loader() {
       <div></div>
     </div>
   );
-}
+};
+
+export default Loader;

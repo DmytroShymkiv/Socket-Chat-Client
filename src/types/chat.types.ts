@@ -1,3 +1,5 @@
+import { IMessageFile } from "./file.types";
+
 export interface IChat {
   id: string;
   isRoom: boolean;
@@ -19,12 +21,12 @@ export interface IMessage {
   status: string;
   photo: string;
   date: number;
-  file?: string;
+  file?: IMessageFile;
 }
 
 export interface ISelectedChat {
   chat: IChat;
-  messages: IMessage[];
+  messages?: IMessage[];
 }
 
 export enum Status {

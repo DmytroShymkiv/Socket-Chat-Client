@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 
-export default function Alert({ message }) {
+const Alert: FC<{ message: string }> = ({ message }) => {
   return (
     <>
       {message && (
@@ -12,4 +12,6 @@ export default function Alert({ message }) {
       )}
     </>
   );
-}
+};
+
+export default Alert;

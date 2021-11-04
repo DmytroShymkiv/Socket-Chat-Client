@@ -1,9 +1,9 @@
-import React from "react";
+import { FC } from "react";
 
 import more from "../../assets/icons/chevron-down.png";
 import search from "../../assets/icons/search.png";
 
-export default function Search() {
+const Search: FC = () => {
   return (
     <div className="search">
       <div className="search__form">
@@ -18,4 +18,6 @@ export default function Search() {
       </div>
     </div>
   );
-}
+};
+
+export default Search;

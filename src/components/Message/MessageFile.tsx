@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, FC } from "react";
 
 import FilesService from "../../services/FilesService";
 import fileImage from "../../assets/icons/file.png";
+import { IMessageFile } from "../../types/file.types";
 
-export default function MessageFile({ file }) {
-  const [image, setImage] = useState(null);
+const MessageFile: FC<{ file: IMessageFile }> = ({ file }) => {
+  const [image, setImage] = useState<string | null>(null);
 
   useEffect(() => {
     if (!file) return;
@@ -24,7 +25,7 @@ export default function MessageFile({ file }) {
 
   function File() {
     const name = FilesService.formatName(file.name);
-    
+
     return (
       <div className="message__file" onClick={handleClick}>
         <img src={fileImage} alt="file" />
@@ -34,6 +35,8 @@ export default function MessageFile({ file }) {
   }
 
   return (
-    <>{file && ((image && <img src={image} alt={file.name} />) || <File />)}</>
+    <>{(image && <img src={image} alt={file.name} />) || <File />}</>
   );
-}
+};
+
+export default MessageFile;

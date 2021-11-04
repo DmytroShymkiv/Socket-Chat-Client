@@ -1,10 +1,11 @@
-import React from "react";
+import { FC } from "react";
 
 import { useChats } from "../../../contexts/ChatsContext";
 import ChatListHeader from "./ChatListHeader";
 import ChatPreview from "./ChatPreview";
 import Search from "../../Search/Search";
-export default function ChatList() {
+
+const ChatList: FC = () => {
   const { chats } = useChats();
 
   return (
@@ -18,4 +19,6 @@ export default function ChatList() {
       </ul>
     </>
   );
-}
+};
+
+export default ChatList;

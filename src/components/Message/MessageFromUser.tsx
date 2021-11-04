@@ -1,4 +1,4 @@
-import React from "react";
+import { FC } from "react";
 
 import more from "../../assets/icons/more-horizontal.png";
 import send from "../../assets/icons/checkmark.png";
@@ -6,17 +6,25 @@ import read from "../../assets/icons/all-done.png";
 import MessageFile from "./MessageFile";
 import MessageAction from "../MessageActions/MessageAction";
 import { useUI } from "../../contexts/UIContext";
+import { IMessage } from "../../types/chat.types";
 
-export default function MessageFromUser({ message }) {
+const MessageFromUser: FC<{
+  message: IMessage;
+}> = ({ message }) => {
   const { messages } = useUI();
   const { showActionID, setShowActionID, cancelEdit } = messages;
   const isActionShowed = showActionID === message.id;
 
   const getMessageStatus = () => {
+    enum statuses {
+      READ = "read",
+      SEND = "send",
+    }
+
     switch (message.status) {
-      case "read":
+      case statuses.READ:
         return <img src={read} alt="read" />;
-      case "send":
+      case statuses.SEND:
         return <img src={send} alt="send" />;
       default:
         return <div>...</div>;
@@ -24,7 +32,7 @@ export default function MessageFromUser({ message }) {
   };
 
   const handleClick = () => {
-    setShowActionID(!isActionShowed && message.id);
+    setShowActionID(!isActionShowed ? message.id : null);
     isActionShowed && cancelEdit();
   };
 
@@ -36,9 +44,11 @@ export default function MessageFromUser({ message }) {
       </button>
       <div className="message-from__content">
         {message.text}
-        <MessageFile file={message.file} />
+        {message.file && <MessageFile file={message.file} />}
       </div>
       <div>{getMessageStatus()}</div>
     </div>
   );
-}
+};
+
+export default MessageFromUser;

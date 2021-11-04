@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import { useState, FC, FormEvent, ChangeEvent } from "react";
 
 import { useAuth } from "../../contexts/AuthContext";
 import { useSocket } from "../../contexts/SocketContext/SocketContext";
+import { IFile } from "../../types/file.types";
 
-export default function ChatForm({ onClose }) {
+interface ICreateRoomBody {
+  users: string[];
+  name: string;
+  photo?: IFile | "";
+}
+
+const ChatForm: FC<{ onClose: () => void }> = ({ onClose }) => {
   const { createRoom } = useSocket();
   const { currentUser } = useAuth();
   const [isRoom, setIsRoom] = useState(false);
   const [email, setEmail] = useState("");
- 
-  const initialRoomState = {
-    users: [currentUser.email],
+
+  const initialRoomState: ICreateRoomBody = {
+    users: [currentUser ? currentUser.email : ""],
     name: "",
     photo: "",
   };
-  const [room, setRoom] = useState(initialRoomState);
+  const [room, setRoom] = useState<ICreateRoomBody>(initialRoomState);
 
-  const getParams = (mode) => ({
+  const getParams = (mode: boolean) => ({
     style: { textDecoration: (mode ? isRoom : !isRoom) ? "underline" : "none" },
     onClick: () => {
       setIsRoom(mode);
@@ -25,11 +32,11 @@ export default function ChatForm({ onClose }) {
     },
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     const users = room.users;
     email && users.push(email);
-    createRoom(users, room.photo, room.name);
+    createRoom(users, room.photo as IFile, room.name);
     onClose();
   };
 
@@ -38,20 +45,23 @@ export default function ChatForm({ onClose }) {
     setEmail("");
   };
 
-  const handleRemoveUser = (removeEmail) => {
-    const users = (prev) => prev.users.filter((email) => email !== removeEmail);
+  const handleRemoveUser = (removeEmail: string) => {
+    const users = (prev: ICreateRoomBody) =>
+      prev.users.filter((email) => email !== removeEmail);
     setRoom((prev) => ({ ...prev, users: users(prev) }));
   };
 
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    const file = files && files[0];
+    if (!file) return;
     setRoom((prev) => ({
       ...prev,
       photo: { originalName: file.name, size: file.size, buffer: file },
     }));
   };
 
-  function UserEmail({ email }) {
+  function UserEmail({ email }: { email: string }) {
     return (
       <li>
         <p>{email}</p>
@@ -62,8 +72,12 @@ export default function ChatForm({ onClose }) {
     );
   }
 
-  function Input(name) {
-    const handleChange = (e) => {
+  enum InputNames {
+    name = "name",
+  }
+
+  function Input(name: InputNames) {
+    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       setRoom((prev) => ({ ...prev, [name]: e.target.value }));
     };
 
@@ -99,7 +113,7 @@ export default function ChatForm({ onClose }) {
                   onChange={handleFileChange}
                 />
               </div>
-              {Input("name")}
+              {Input(InputNames.name)}
               <div className="chat-modal__form-emails">
                 <p>Users</p>
                 <ul>
@@ -132,4 +146,6 @@ export default function ChatForm({ onClose }) {
       </div>
     </div>
   );
-}
+};
+
+export default ChatForm;

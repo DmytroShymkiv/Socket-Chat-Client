@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, FC } from "react";
 
 import ChatContent from "./ChatContent";
 import ChatHeader from "./ChatHeader";
@@ -6,13 +6,13 @@ import { useChats } from "../../../contexts/ChatsContext";
 import MessageInput from "../../MessageInput/MessageInput";
 import { useSocket } from "../../../contexts/SocketContext/SocketContext";
 
-export default function Chat() {
+const Chat: FC = () => {
   const { selectedChat, setSelectedChat } = useChats();
   const { sendMessage } = useSocket();
 
   useEffect(() => {
     return () => {
-      setSelectedChat(null);
+      setSelectedChat(undefined);
     };
 
     // eslint-disable-next-line
@@ -31,4 +31,6 @@ export default function Chat() {
       )}
     </div>
   );
-}
+};
+
+export default Chat;

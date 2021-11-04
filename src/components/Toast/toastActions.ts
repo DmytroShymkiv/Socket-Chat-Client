@@ -1,8 +1,14 @@
 import { toast } from "react-toastify";
 import FilesService from "../../services/FilesService";
 import ChatService from "../../services/ChatService";
+import { IChat } from "../../types/chat.types";
+import { IMessageResponse } from "../../types/socket.types";
 
-export const toastMessage = (message, chats, email) => {
+export const toastMessage = (
+  message: IMessageResponse,
+  chats: IChat[],
+  email?: string
+) => {
   const name = ChatService.getChatNameById(message.room, chats);
   const file = FilesService.formatName(message.file && message.file.name);
   const text = message.text + " " + file;
@@ -20,7 +26,7 @@ export const toastMessage = (message, chats, email) => {
     });
 };
 
-export const toastError = (err) => {
+export const toastError = (err: string) => {
   toast.error(err, {
     position: "top-right",
     autoClose: 1000,

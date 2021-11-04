@@ -1,16 +1,16 @@
-import React from "react";
+import { FC } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-import pageLinks from "./pageLinks";
+import pageLinks, { IPageLink } from "./pageLinks";
 import UserProfile from "../UserProfile/UserProfile";
 
 import { useAuth } from "../../contexts/AuthContext";
 import power from "../../assets/icons/power.png";
 
-export default function TopMenu() {
+const TopMenu: FC = () => {
   const location = useLocation();
 
-  function PageLink({ pageLink }) {
+  const PageLink: FC<{ pageLink: IPageLink }> = ({ pageLink }) => {
     const isActive = location.pathname === pageLink.name;
     return (
       <Link
@@ -21,7 +21,7 @@ export default function TopMenu() {
         <h5>{pageLink.name.substring(1)}</h5>
       </Link>
     );
-  }
+  };
 
   return (
     <div className="top-menu">
@@ -37,7 +37,9 @@ export default function TopMenu() {
       </div>
     </div>
   );
-}
+};
+
+export default TopMenu;
 
 function Logout() {
   const { logout } = useAuth();

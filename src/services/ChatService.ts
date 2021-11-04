@@ -42,6 +42,7 @@ class ChatService {
     message: IMessageResponse,
     email?: string
   ) {
+    if (!room.messages) return;
     const updatedMessages = [...room.messages];
     const isMyMessage = email === message.email;
     updatedMessages.push({
@@ -58,6 +59,7 @@ class ChatService {
   }
 
   public setEditedMessage(message: IMessage, room: ISelectedChat): IMessage[] {
+    if (!room.messages) return [];
     const updatedMessages = [...room.messages];
     const index = this.findByIndex(message.id, room.messages);
     if (index < 0) return room.messages;
@@ -67,6 +69,7 @@ class ChatService {
   }
 
   public deleteMessageFromRoom(id: string, room: ISelectedChat): IMessage[] {
+    if (!room.messages) return [];
     const updatedMessages = [...room.messages];
     const index = this.findByIndex(id, room.messages);
     if (index < 0) return [];

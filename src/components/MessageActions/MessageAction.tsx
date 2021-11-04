@@ -1,9 +1,14 @@
-import React from "react";
+import { FC } from "react";
 
 import { useSocket } from "../../contexts/SocketContext/SocketContext";
 import { useUI } from "../../contexts/UIContext";
 
-export default function MessageAction({ id, text }) {
+interface IMessageActionProps {
+  id: string;
+  text: string;
+}
+
+const MessageAction: FC<IMessageActionProps> = ({ id, text }) => {
   const { messages } = useUI();
   const { startEdit, cancelEdit } = messages;
   const { deleteMessageEmit } = useSocket();
@@ -15,4 +20,6 @@ export default function MessageAction({ id, text }) {
       <button onClick={cancelEdit}>Cancel</button>
     </div>
   );
-}
+};
+
+export default MessageAction;
