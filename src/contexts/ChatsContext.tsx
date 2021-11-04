@@ -32,6 +32,7 @@ interface IContextValue {
   getChatMessagesCount: (chat: IChat) => Promise<number | IError>;
   setEditedMessage: (message: IMessage) => Promise<void>;
   addRoom: (room: IChat) => void;
+  removeRoom: (roomId: string) => void;
   updateChatStatus: (id: string, status: statusType) => void;
   getAllChats: () => Promise<IChat[] | IError>;
   updateSelectedChat: () => Promise<void>;
@@ -63,6 +64,11 @@ const ChatsProvider: FC = ({ children }) => {
 
   const addRoom = (room: IChat) => {
     setChats((prev) => [...prev, room]);
+  };
+
+  const removeRoom = (roomId: string) => {
+    setChats((prev) => prev.filter((room) => room.id !== roomId));
+    setSelectedChat((prev) => (prev?.chat.id === roomId ? undefined : prev));
   };
 
   const getChatRoom = async (chat: IChat, start: number, howMany: number) => {
@@ -168,6 +174,7 @@ const ChatsProvider: FC = ({ children }) => {
     getChatMessagesCount,
     setEditedMessage,
     addRoom,
+    removeRoom,
     updateChatStatus,
     getAllChats,
     updateSelectedChat,

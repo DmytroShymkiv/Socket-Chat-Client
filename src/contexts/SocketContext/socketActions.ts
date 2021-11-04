@@ -7,6 +7,7 @@ enum Actions {
   ServerStopWriting = "server-stop-writing",
   ServerReadMessage = "server-read-message",
   ServerJoinRoom = "server-join-room",
+  ServerDeleteRoom = "server-delete-room",
 
   ClientError = "client-error",
   ClientMessage = "client-message",
@@ -19,6 +20,7 @@ enum Actions {
   ClientStartWriting = "client-start-writing",
   ClientStopWriting = "client-stop-writing",
   ClientReadMessage = "client-read-message",
+  ClientDeleteRoom = "client-delete-room",
 }
 
 export default Actions;

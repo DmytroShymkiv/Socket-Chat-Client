@@ -3,14 +3,20 @@ import { FC } from "react";
 import { useChats } from "../../../contexts/ChatsContext";
 import { useUI } from "../../../contexts/UIContext";
 import attach from "../../../assets/icons/attach-2.png";
-import more from "../../../assets/icons/more-vertical.png";
+import more from "../../../assets/icons/delete.png";
 import { getChatStatus } from "../../../utils";
+import { useSocket } from "../../../contexts/SocketContext/SocketContext";
 
 const ChatHeader: FC = () => {
+  const { deleteRoom } = useSocket();
   const { responsive } = useUI();
   const { isSomeHidden, hideChat } = responsive;
   const { selectedChat } = useChats();
   const chat = selectedChat && selectedChat.chat;
+
+  const handleDeleteClick = () => {
+    if (chat) deleteRoom(chat.id);
+  };
 
   return (
     <>
@@ -30,7 +36,7 @@ const ChatHeader: FC = () => {
             <button>
               <img src={attach} alt="attach" />
             </button>
-            <button>
+            <button onClick={handleDeleteClick}>
               <img src={more} alt="more" />
             </button>
           </div>

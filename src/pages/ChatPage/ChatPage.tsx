@@ -6,15 +6,17 @@ import Loader from "../../components/Loader/Loader";
 import Toast from "../../components/Toast/ToastContainer";
 import TopMenu from "../../components/TopMenu/TopMenu";
 import { useChats } from "../../contexts/ChatsContext";
+import { useSocket } from "../../contexts/SocketContext/SocketContext";
 import { useUI } from "../../contexts/UIContext";
 import { IError } from "../../types/error.type";
 
 const ChatPage: FC = () => {
   const { getAllChats } = useChats();
   const { responsive } = useUI();
-  const { isListHidden, isChatHidden } = responsive;
+  const { isListHidden, isChatHidden, hideChat } = responsive;
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
+  const { disconnect } = useSocket();
 
   const fetchChats = async () => {
     const response = await getAllChats();
@@ -25,6 +27,10 @@ const ChatPage: FC = () => {
   useEffect(() => {
     fetchChats();
 
+    return () => {
+      disconnect();      
+      hideChat();
+    };
     // eslint-disable-next-line
   }, []);
 

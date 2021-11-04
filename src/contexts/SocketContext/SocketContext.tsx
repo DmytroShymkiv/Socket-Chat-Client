@@ -19,9 +19,11 @@ interface IContextValue {
   updateMessage: (id: string, text: string) => void;
   deleteMessageEmit: (id: string) => void;
   createRoom: (users: string[], photo?: IFile, name?: string) => void;
+  deleteRoom: (room: string) => void;
   startWriting: (room: string) => void;
   stopWriting: (room: string) => void;
   readMessages: (roomId: string) => void;
+  disconnect: () => void;
 }
 
 const SocketContext = React.createContext<IContextValue>({} as IContextValue);
@@ -41,6 +43,7 @@ const SocketProvider: FC = ({ children }) => {
     updateSelectedChat,
     updateChatStatus,
     updateChatUnchecked,
+    removeRoom,
   } = useChats();
 
   const { currentUser } = useAuth();
@@ -81,6 +84,10 @@ const SocketProvider: FC = ({ children }) => {
     socket.current.on(Actions.ClientCreateRoom, (room: IChat) => {
       socket.current?.emit(Actions.ServerJoinRoom, room.id);
       addRoom(room);
+    });
+
+    socket.current.on(Actions.ClientDeleteRoom, (room: string) => {
+      removeRoom(room);
     });
 
     socket.current.on(Actions.ClientStartWriting, (res: ISocketResponse) => {
@@ -137,6 +144,10 @@ const SocketProvider: FC = ({ children }) => {
     });
   };
 
+  const deleteRoom = (room: string) => {
+    socket.current?.emit(Actions.ServerDeleteRoom, room);
+  };
+
   const startWriting = (room: string) => {
     socket.current?.emit(Actions.ServerStartWriting, {
       id: room,
@@ -155,14 +166,20 @@ const SocketProvider: FC = ({ children }) => {
     });
   };
 
+  const disconnect = () => {
+    socket.current?.disconnect();
+  };
+
   const value: IContextValue = {
     sendMessage,
     updateMessage,
     deleteMessageEmit,
     createRoom,
+    deleteRoom,
     startWriting,
     stopWriting,
     readMessages,
+    disconnect,
   };
 
   return (
